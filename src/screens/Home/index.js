@@ -33,7 +33,7 @@ import dataTeste from '../../dataTeste'
 
 
 const initialState = {       
-    categorias: []   
+    purchaseItems: []   
 }
 
 
@@ -49,59 +49,10 @@ export default class Home extends Component {
         await this.loadShopList();        
     }
 
-    setList(list) {
-        this.setState({list: list})
+    setList(purchaseItems) {
+        this.setState({purchaseItems: purchaseItems})
 
-    }
-
-    // loadShopList = async ()  =>  {  
-  
-    //         try {                       
-    //             const ItemUsuario = Parse.Object.extend("itens_usuarios")
-    //             const queryItemUsuario = new Parse.Query(ItemUsuario)    
-    //             queryItemUsuario.include("item_id")
-    //             queryItemUsuario.include(["item_id.categoria_id"])  
-    //             queryItemUsuario.ascending("item_id")
-    
-    //             const itensUsuario = await queryItemUsuario.find();          
-    
-    //             const Categoria = Parse.Object.extend("categorias")
-    //             const queryCategoria = new Parse.Query(Categoria)   
-    
-    //             let categorias = [];                
-    //             for(let i = 0; i < itensUsuario.length; i++) {   
-               
-    //                 const categoriaId = itensUsuario[i].get("item_id").get("categoria_id").id;              
-    //                 queryCategoria.equalTo("objectId",  itensUsuario[i].get("item_id").get("categoria_id").id)
-    //                 const categoria = await queryCategoria.find();                      
-                  
-    //                 const categoriaDuplicada = categorias.find(cat => cat.id == categoriaId)
-                    
-    //                 if(categoriaDuplicada == undefined) {
-    //                     categorias.push(categoria[0])              
-    //                 }
-    //             }
-          
-    //             categorias.forEach(c => {      
-    //                 c.set("itens", [])
-    //                 c.save();        
-    //                 itensUsuario.forEach(iu => {
-    //                     if(c.id == iu.get("item_id").get("categoria_id").id) {
-    //                         c.get("itens").push(iu)
-    //                     }
-    //                 })    
-                   
-    //             })                  
-           
-         
-    //             this.setState({categorias: categorias})
-          
-               
-    //         } catch (error) {                
-    //             alert(`Não foi possível caregar a Lista de Compras ${JSON.stringify(error.message)}`)
-    //         }
-         
-    // }    
+    }    
 
     loadShopList = async ()  =>  {  
   
@@ -143,7 +94,7 @@ export default class Home extends Component {
             })                  
        
      
-            this.setState({categorias: categorias})
+            this.setState({purchaseItems: categorias})
       
            
         } catch (error) {                
@@ -177,32 +128,6 @@ export default class Home extends Component {
 
         }
     }
-
-    // updateShopList = async (item, itemQuantidade)  =>  {  
-    //     //é uma arrow function para ser usado como parametro no click
-    //     try {           
-    //     item.unset("itemQuantidade")
-    //     item.unset("isChose")
-    //     item.save()   
-      
-
-    //     const ItemUsuario = Parse.Object.extend("itens_usuarios")
-    //     const itemUsuario = new ItemUsuario();
-
-    //     const Item = Parse.Object.extend("itens")
-    //     const itemCompleto = new Item();
-    //     itemCompleto.id = `${item.id}`      
-
-    //     itemUsuario.set("quantidade", itemQuantidade)
-    //     itemUsuario.set("item_id", itemCompleto)            
-    //     // itemUsuario.set("usuario_id", `${wXSqmG4vwM}`)
-    //     itemUsuario.save();   
-
-    //     } catch (error) {
-    //         alert(`Não foi possível atualizar a Lista de Compras ${JSON.stringify(error.message)}`)
-
-    //     }
-    // }
      
     setQuantityValue = async (itemId, quantity) => {     
         try {
@@ -221,9 +146,8 @@ export default class Home extends Component {
 
        }       
    }
-//dELETEITEM TODO BUGADO VERIFICAER
+
    deleteItem = async (itemId) => {
-       console.warn('teste')
         try {
             const ListaCompraItem = Parse.Object.extend("listas_compras_itens")
             const queryListaCompraItem = new Parse.Query(ListaCompraItem)         
@@ -250,17 +174,20 @@ export default class Home extends Component {
                     <HeaderTitle>
                         Bom dia
                     </HeaderTitle>
-                    <AutoCompleteInput changeData={this.updateShopList} 
-                    refreshListaCompras={this.loadShopList}
-                    listaCompraData={this.state.categorias} />
+                    <AutoCompleteInput 
+                    isToStock={false}
+                    changeData={this.updateShopList} 
+                    refreshListaCompras={this.loadShopList}              
+                    />
                 </LinearGradient>
             </Header>
                 
             <List 
-            listStyle ={styles.list} 
-            data={this.state.categorias} 
+            data={this.state.purchaseItems}
             setQuantityValue={this.setQuantityValue}
-             />   
+            onDelete={this.deleteItem}
+            listStyle={{flex: 5}}
+            enableAddItem={true} />
                                               
         </Container>
         )

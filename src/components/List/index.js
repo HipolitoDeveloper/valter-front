@@ -21,7 +21,8 @@ export default props => {
                 keyExtractor={i => `${i.id}`}
                 renderItem={({item}) => <ListContent {...item} categoria={item} 
                 setQuantityValue={props.setQuantityValue}
-                deleteItem={props.deleteItem} />} />
+                onDelete={props.onDelete}
+                enableAddItem={props.enableAddItem} />} />
                             
             </List>                       
         </ListContainer>   

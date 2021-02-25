@@ -22,16 +22,18 @@ export default props => {
     const array = [{id: 1, label: '1'}, {id: 2, label: '2'}, {id: 3, label: '3'}, {id: 4, label: '4'}]; 
    
 
-    const getLeftContent = () => {
+    const getRightContent = () => {
+
+    
         return ( 
-            <TouchableOpacity style={styles.left}>
-            {/* // onPress={() => props.onDelete && props.onDelete(props.id)}> */}
-                <Icon name="plus" size={30} color='#FFF' />
-            </TouchableOpacity>
+            props.enableAddItem &&
+                <TouchableOpacity style={styles.left}>           
+                    <Icon name="plus" size={30} color='#FFF' />
+                </TouchableOpacity> 
         )
     }
 
-    const getRightContent = () => {
+    const getLeftContent = () => {
         return ( 
             <View style={styles.right}>
                 <Icon name="trash" size={20} color='#FFF' style={styles.excludeIcon} />
@@ -40,9 +42,9 @@ export default props => {
         )
     }
 
-    function deleteItem(itemId) {
-        props.deleteItem(itemId)
-    }
+    // function deleteItem(itemId) {
+    //     props.deleteItem(itemId)
+    // }
     
         return(                     
             <Container>
@@ -57,11 +59,12 @@ export default props => {
                 keyExtractor={i => `${i.id}`}
                 renderItem={({item}) => 
 
+               
                 <Swipeable
-                renderRightActions={getLeftContent}
-                renderLeftActions={getRightContent}
-                onSwipeableLeftOpen={deleteItem(item.id)}
-                >  
+                renderRightActions={getRightContent}       
+                renderLeftActions={getLeftContent}           
+                onSwipeableLeftOpen={() => props.onDelete && props.onDelete(item.id)}
+                >
                     <ItemContainer>                    
                         <ItemContent> 
                             <ItemDescription >{item.get("item_id").get("descricao")}</ItemDescription>     
@@ -80,11 +83,8 @@ export default props => {
                             </PickerContainer>               
                         </ItemContent>
                     </ItemContainer>
-                 </Swipeable>
-                
-               
-                } />
-                  
+                </Swipeable>
+            }/>
             </Container>
             
         )  

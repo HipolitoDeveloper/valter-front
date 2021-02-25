@@ -45,8 +45,7 @@ export default props => {
 
     async function loadItens() {
    
-        try {    
-        
+        try {            
             const Item = Parse.Object.extend("itens")
             const queryItem = new Parse.Query(Item)
             queryItem.find().then((itens) => {                 
@@ -102,11 +101,50 @@ export default props => {
         
     }
 
-   async function changeItemQuantity(quantidade, item) {
-        const ItemUsuario = Parse.Object.extend("itens_usuarios")
-        const queryItemUsuario = new Parse.Query(ItemUsuario)           
-        queryItemUsuario.equalTo("item_id",  item)
-        const verificarItem = await queryItemUsuario.find();
+//    async function changeItemQuantity(quantidade, item) {
+//         const ItemUsuario = Parse.Object.extend("itens_usuarios")
+//         const queryItemUsuario = new Parse.Query(ItemUsuario)           
+//         queryItemUsuario.equalTo("item_id",  item)
+//         const verificarItem = await queryItemUsuario.find();
+       
+//         if(verificarItem.length == 0) {
+//             itensFiltered.map(d => {
+//                 if(d.id == item.id) {
+//                     d.set("itemQuantidade", quantidade)                
+                   
+//                     if(quantidade == 0 ) {                
+//                         d.set("isChose", false)
+//                     } else {                    
+//                         d.set("isChose", true)
+//                     }                  
+//                 }
+//             })         
+          
+//             updateList(itensFiltered);      
+//         } else {
+//             alert(`Item já existente na lista de compras, gostaria de excluir o item?`)
+
+//         }
+             
+//     }
+
+    async function changeItemQuantity(quantidade, item) {
+        
+        let verificarItem = [];
+        if(props.isToStock) {
+
+            const ItemUsuario = Parse.Object.extend("itens_usuarios")
+            const queryItemUsuario = new Parse.Query(ItemUsuario)           
+            queryItemUsuario.equalTo("item_id",  item)
+            verificarItem = await queryItemUsuario.find();
+
+        } else {
+
+            const ListaCompraItem = Parse.Object.extend("listas_compras_itens")
+            const queryListaCompraItem = new Parse.Query(ListaCompraItem)           
+            queryListaCompraItem.equalTo("item_id",  item)
+            verificarItem = await queryListaCompraItem.find();
+        }
        
         if(verificarItem.length == 0) {
             itensFiltered.map(d => {

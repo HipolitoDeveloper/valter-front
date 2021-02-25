@@ -48,6 +48,7 @@ export default props => {
         
         <Container>    
             <OptionListModal
+            isToStock={props.isToStock}
             modalVisible={modalVisible} 
             searchedItem={searchedItem} 
             closeModal = {onCloseModal}

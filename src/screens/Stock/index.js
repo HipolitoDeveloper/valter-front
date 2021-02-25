@@ -8,6 +8,8 @@ import {
     NotificationButton,
     InputContainer } from './style';
 
+import Parse from "parse/react-native.js";
+
 import List from '../../components/List'
 import AutoCompleteInput from '../../components/AutoCompleteInput'
 
@@ -19,7 +21,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 const initialState = {
     selectedValue: 0,
     quantity: 0,
-    list : dataTeste
+    stockItens : []
 }
 
 export default class Stock extends Component {    
@@ -27,36 +29,123 @@ export default class Stock extends Component {
         ...initialState          
      }   
 
-     
-    setList(list) {
-        this.setState({list: list})
+     async componentDidMount() {
+        await this.loadStockList();        
     }
+
      
-     setQuantityValue = (categoryID, itemId, quantity) => {        
-      this.state.list.forEach(l => {
+    setList(stockItens) {
+        this.setState({stockItens: stockItens})
+    }
+
+    loadStockList = async ()  =>  {    
+            try {                       
+                const ItemUsuario = Parse.Object.extend("itens_usuarios")
+                const queryItemUsuario = new Parse.Query(ItemUsuario)    
+                queryItemUsuario.include("item_id")
+                queryItemUsuario.include(["item_id.categoria_id"])  
+                queryItemUsuario.ascending("item_id")
+    
+                const itensUsuario = await queryItemUsuario.find();          
+    
+                const Categoria = Parse.Object.extend("categorias")
+                const queryCategoria = new Parse.Query(Categoria)   
+    
+                let categorias = [];                
+                for(let i = 0; i < itensUsuario.length; i++) {   
+               
+                    const categoriaId = itensUsuario[i].get("item_id").get("categoria_id").id;              
+                    queryCategoria.equalTo("objectId",  itensUsuario[i].get("item_id").get("categoria_id").id)
+                    const categoria = await queryCategoria.find();                      
+                  
+                    const categoriaDuplicada = categorias.find(cat => cat.id == categoriaId)
+                    
+                    if(categoriaDuplicada == undefined) {
+                        categorias.push(categoria[0])              
+                    }
+                }
           
-             if(l.id == categoryID) {
-                 l.itens.map(i => {                 
-                     if(i.id == itemId)                    
-                     i.itemQuantity = quantity;                     
-                 })
-             }
-         })
+                categorias.forEach(c => {      
+                    c.set("itens", [])
+                    c.save();        
+                    itensUsuario.forEach(iu => {
+                        if(c.id == iu.get("item_id").get("categoria_id").id) {
+                            c.get("itens").push(iu)
+                        }
+                    })    
+                   
+                })                  
+           
          
-         this.setList(this.state.list)              
-        
-    }
-
-    updateShopList = (item) => {       
-        this.state.list.forEach(l => {
-
-            if(l.id == item.categoryId) {               
-                l.itens.push(item)
+                this.setState({stockItens: categorias})
+          
+               
+            } catch (error) {                
+                alert(`Não foi possível caregar os itens do estoque ${JSON.stringify(error.message)}`)
             }
-        })
+         
+    }    
+     
+    setQuantityValue = async (itemId, quantity) => {     
+        try {
+           const ItemUsuario = Parse.Object.extend("itens_usuarios")
+           const queryItemUsuario= new Parse.Query(ItemUsuario)         
 
-        this.setList(this.state.list)
+           queryItemUsuario.get(itemId).then((usuarioItem) => {
+            usuarioItem.set("quantidade", quantity)
+            usuarioItem.save().then((response) => {
+                   this.loadStockList();
+               });
+           })
+
+       } catch (error) {
+           alert(`Não foi possível mudar a quantidade do item ${JSON.stringify(error.message)}`)
+
+       }       
+   }
+
+
+    updateStockList = async (item, itemQuantidade)  =>  {  
+        //é uma arrow function para ser usado como parametro no click
+        try {           
+        item.unset("itemQuantidade")
+        item.unset("isChose")
+        item.save()   
+      
+
+        const ItemUsuario = Parse.Object.extend("itens_usuarios")
+        const itemUsuario = new ItemUsuario();
+
+        const Item = Parse.Object.extend("itens")
+        const itemCompleto = new Item();
+        itemCompleto.id = `${item.id}`      
+
+        itemUsuario.set("quantidade", itemQuantidade)
+        itemUsuario.set("item_id", itemCompleto)            
+        // itemUsuario.set("usuario_id", `${wXSqmG4vwM}`)
+        itemUsuario.save();   
+
+        } catch (error) {
+            alert(`Não foi possível atualizar o estoque ${JSON.stringify(error.message)}`)
+
+        }
     }
+
+    deleteItem = async (itemId) => {
+        try {
+            const ItemUsuario = Parse.Object.extend("itens_usuarios")
+            const queryItemUsuario = new Parse.Query(ItemUsuario)         
+ 
+            queryItemUsuario.get(itemId).then((usuarioItemk) => {           
+                usuarioItemk.destroy().then((response) => {
+                    this.loadStockList();
+                });
+            })
+        } catch (error) {
+            alert(`Não foi possível excluir o item do seu estoque ${JSON.stringify(error.message)}`)
+
+        }
+   }
 
     render() {
         return (
@@ -73,15 +162,20 @@ export default class Stock extends Component {
                     </Header>
 
                     <InputContainer>
-                            <AutoCompleteInput changeData={this.updateShopList} />
+                            <AutoCompleteInput 
+                            isToStock={true}
+                            changeData={this.updateStockList}
+                            refreshListaCompras={this.loadStockList}  />
                     </InputContainer> 
                 </HeaderContainer>
                  
 
                 <List 
-                data={this.state.list}
+                data={this.state.stockItens}
                 setQuantityValue={this.setQuantityValue}
-                listStyle={{flex: 3}} />
+                onDelete={this.deleteItem}
+                listStyle={{flex: 3}}
+                enableAddItem={false} />
             </Container>
         );
     };
