@@ -13,7 +13,7 @@ import {
     KeyboardAvoidingView,} from 'react-native'
 
 import {Container, Header, HeaderTitle, HeaderSubTitle} from './style'
-import Parse from "parse/react-native.js";
+import Parse, { Query } from "parse/react-native.js";
 
 import {Picker} from '@react-native-picker/picker'
 
@@ -103,8 +103,7 @@ export default class Home extends Component {
      
 }    
 
-    updateShopList = async (item, itemQuantidade)  =>  {  
-        //é uma arrow function para ser usado como parametro no click
+    updateShopList = async (item, itemQuantidade)  =>  {         
         try {           
         item.unset("itemQuantidade")
         item.unset("isChose")
@@ -136,7 +135,8 @@ export default class Home extends Component {
 
            queryListaCompraItem.get(itemId).then((listaCompraItem) => {
             listaCompraItem.set("quantidade", quantity)
-            listaCompraItem.save().then((response) => {
+            listaCompraItem.save().then(
+                () => {
                    this.loadShopList();
                });
            })
@@ -153,13 +153,54 @@ export default class Home extends Component {
             const queryListaCompraItem = new Parse.Query(ListaCompraItem)         
  
             queryListaCompraItem.get(itemId).then((listaCompraItem) => {           
-             listaCompraItem.destroy().then((response) => {
+             listaCompraItem.destroy().then(
+                 () => {
                     this.loadShopList();
                 });
             })
         } catch (error) {
+            alert(`Não foi possível excluir o item ${JSON.stringify(error.message)}`)
 
         }
+   }
+
+   addItem = async (itemComprado) => {
+       try {
+        const ListaCompraItem = Parse.Object.extend("listas_compras_itens")
+        const queryListaCompraItem = new Parse.Query(ListaCompraItem)         
+
+        queryListaCompraItem.get(itemComprado.id).then((listaCompraItem) => {           
+         listaCompraItem.destroy().then(
+             () => {
+
+                const ItemUsuario = Parse.Object.extend("itens_usuarios")
+                const queryItemUsuario = new Parse.Query(ItemUsuario)   
+                
+                const Item = Parse.Object.extend("itens")
+                const queryItem = new Parse.Query(Item)   
+                queryItem.equalTo("objectId",  itemComprado.get("item_id").id)
+
+                queryItemUsuario.matchesQuery("item_id", queryItem)
+                
+                queryItemUsuario.find().then((item) => {
+                    if(item.length == 0) {
+                        const itemUsuario = new ItemUsuario();
+
+                        itemUsuario.set("quantidade", itemComprado.get("quantidade"))
+                        itemUsuario.set("item_id", itemComprado.get("item_id"))            
+                        // itemUsuario.set("usuario_id", `${wXSqmG4vwM}`)
+                        itemUsuario.save();   
+                    } else {
+                        item[0].set("quantidade", item[0].get("quantidade") +  itemComprado.get("quantidade"))
+                        item[0].save();   
+                    }
+                    this.loadShopList();
+                });
+            });
+        })
+       } catch (error) {
+        alert(`Não foi possível confirmar a compra do item ${JSON.stringify(error.message)}`)
+       }
    }
 
     render() {    
@@ -187,7 +228,7 @@ export default class Home extends Component {
             setQuantityValue={this.setQuantityValue}
             onDelete={this.deleteItem}
             listStyle={{flex: 5}}
-            enableAddItem={true} />
+            addItem={this.addItem} />
                                               
         </Container>
         )

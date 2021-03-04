@@ -19,15 +19,24 @@ export default props => {
     const [selectedValue, setSelectedValue ] = useState(0);
     const [list, setList] = useState({});   
       
-    const array = [{id: 1, label: '1'}, {id: 2, label: '2'}, {id: 3, label: '3'}, {id: 4, label: '4'}]; 
+    const array = 
+    [{id: 1, label: '1'}, 
+    {id: 2, label: '2'}, 
+    {id: 3, label: '3'}, 
+    {id: 4, label: '4'},
+    {id: 5, label: '5'}, 
+    {id: 6, label: '6'}, 
+    {id: 7, label: '7'}, 
+    {id: 8, label: '8'}, 
+    {id: 9, label: '9'}, 
+]; 
    
 
-    const getRightContent = () => {
-
-    
+    const getRightContent = (item) => {
         return ( 
-            props.enableAddItem &&
-                <TouchableOpacity style={styles.left}>           
+            props.addItem &&
+                <TouchableOpacity style={styles.left}
+                onPress={() => props.addItem && props.addItem(item)}>           
                     <Icon name="plus" size={30} color='#FFF' />
                 </TouchableOpacity> 
         )
@@ -40,54 +49,48 @@ export default props => {
                 <Text style={styles.excludeText}>Excluir</Text>
             </View>
         )
-    }
+    } 
+    return(                     
+        <Container>
+                
+            <TitleContainer>
+                <TitleContent>
+                    <TitleDescription>{props.categoria.get("nome")}</TitleDescription>
+                </TitleContent>
+            </TitleContainer>                
+            <FlatList                        
+            data={props.categoria.get("itens")} 
+            keyExtractor={i => `${i.id}`}
+            renderItem={({item}) => 
 
-    // function deleteItem(itemId) {
-    //     props.deleteItem(itemId)
-    // }
-    
-        return(                     
-            <Container>
-                    
-                <TitleContainer>
-                    <TitleContent>
-                        <TitleDescription>{props.categoria.get("nome")}</TitleDescription>
-                    </TitleContent>
-                </TitleContainer>                
-                <FlatList                        
-                data={props.categoria.get("itens")} 
-                keyExtractor={i => `${i.id}`}
-                renderItem={({item}) => 
+        
+            <Swipeable
+            renderRightActions={() => getRightContent(item)}       
+            renderLeftActions={getLeftContent}           
+            onSwipeableLeftOpen={() => props.onDelete && props.onDelete(item.id)}
+            >
+                <ItemContainer>                    
+                    <ItemContent> 
+                        <ItemDescription >{item.get("item_id").get("descricao")}</ItemDescription>     
 
-               
-                <Swipeable
-                renderRightActions={getRightContent}       
-                renderLeftActions={getLeftContent}           
-                onSwipeableLeftOpen={() => props.onDelete && props.onDelete(item.id)}
-                >
-                    <ItemContainer>                    
-                        <ItemContent> 
-                            <ItemDescription >{item.get("item_id").get("descricao")}</ItemDescription>     
-
-                            <PickerContainer>
-                                <Picker 
-                                    mode={'dropdown'}
-                                    key={item.id}
-                                    style={styles.picker}
-                                    selectedValue = {item.get("quantidade")}
-                                    onValueChange={(itemValue, itemIndex) => props.setQuantityValue(item.id, itemValue)}>
-                                        {array.map((picker, index) => {                        
-                                            return (<Picker.Item label={`${picker.label}`} value={picker.id} key={item.id}/>)
-                                        })}                  
-                                </Picker>  
-                            </PickerContainer>               
-                        </ItemContent>
-                    </ItemContainer>
-                </Swipeable>
-            }/>
-            </Container>
-            
-        )  
+                        <PickerContainer>
+                            <Picker 
+                                mode={'dropdown'}
+                                key={item.id}
+                                style={styles.picker}
+                                selectedValue = {item.get("quantidade")}
+                                onValueChange={(itemValue, itemIndex) => props.setQuantityValue(item.id, itemValue)}>
+                                    {array.map((picker, index) => {                        
+                                        return (<Picker.Item label={`${picker.label}`} value={picker.id} key={item.id}/>)
+                                    })}                  
+                            </Picker>  
+                        </PickerContainer>               
+                    </ItemContent>
+                </ItemContainer>
+            </Swipeable>
+        }/>
+        </Container>        
+    )  
   
 }
 

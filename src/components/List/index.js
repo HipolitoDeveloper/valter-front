@@ -22,7 +22,8 @@ export default props => {
                 renderItem={({item}) => <ListContent {...item} categoria={item} 
                 setQuantityValue={props.setQuantityValue}
                 onDelete={props.onDelete}
-                enableAddItem={props.enableAddItem} />} />
+                addItem={props.addItem}                
+                />} />
                             
             </List>                       
         </ListContainer>   

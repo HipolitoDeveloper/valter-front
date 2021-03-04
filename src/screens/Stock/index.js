@@ -10,8 +10,10 @@ import {
 
 import Parse from "parse/react-native.js";
 
+
 import List from '../../components/List'
 import AutoCompleteInput from '../../components/AutoCompleteInput'
+import NotificationsModal from '../../components/Modals/NotificationsModal'
 
 import dataTeste from '../../dataTeste'
 
@@ -19,10 +21,11 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 
 const initialState = {
-    selectedValue: 0,
-    quantity: 0,
+    showNotificationModal: false,
     stockItens : []
 }
+
+let showNotificationModal = false;
 
 export default class Stock extends Component {    
     state = {        
@@ -146,19 +149,33 @@ export default class Stock extends Component {
 
         }
    }
+   showModal = () => {
+    this.setState({showNotificationModal: true})
+   }
+
+   
+   closeModal() {
+    this.setState({showNotificationModal: false})
+   }
 
     render() {
         return (
+            
             <Container>
+
                 <HeaderContainer>
                     <Header>
                         <HeaderTitle>
                             Minha Despensa
                         </HeaderTitle>
+                        <NotificationsModal closeModal={() => this.closeModal()}
+                        stockItens={this.state.stockItens} showNotificationModal={this.state.showNotificationModal} />
 
-                        <NotificationButton>
+                        <NotificationButton
+                            onPress={() => this.showModal()}>
                             <Icon name='bell' size={30} color={'white'} />
-                        </NotificationButton>                 
+                        </NotificationButton>    
+       
                     </Header>
 
                     <InputContainer>
@@ -175,7 +192,9 @@ export default class Stock extends Component {
                 setQuantityValue={this.setQuantityValue}
                 onDelete={this.deleteItem}
                 listStyle={{flex: 3}}
-                enableAddItem={false} />
+                />
+
+                
             </Container>
         );
     };

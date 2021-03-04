@@ -64,17 +64,7 @@ export default props => {
     }
 
     function buildCompleteList(searchedItem, itens) {   
-        // console.warn(props.listaCompraData)
-        // itens.forEach((i, index) => {
-        //     props.listaCompra.forEach(lc => {
-        //         if(i.id == lc.get("item_id").id) {
-        //             itens.splice(index, 1)
-        //         }
-        //     })
-        // })
-
-
-        if(searchedItem) {             
+           if(searchedItem) {             
            
             const regex = new RegExp(`${searchedItem.trim()}`, 'i')
             let listFiltered;
@@ -189,8 +179,7 @@ export default props => {
     return (
         <View>
             <Modal                
-            animationType='slide'
-            transparent={true}           
+            animationType='slide'               
             visible={props.modalVisible} 
             onShow={() => {onOpenModal()}}               
             onRequestClose={() => {
