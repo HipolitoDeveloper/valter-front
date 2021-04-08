@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
-import {    
+import {
     Container,
-    InputAutoComplete, 
+    InputAutoComplete,
     InputContainer,
     InputContent,
-   
+
 } from './style'
 
 import OptionListModal from '../Modals/OptionListModal'
@@ -13,63 +13,64 @@ import OptionListModal from '../Modals/OptionListModal'
 
 
 export default props => {
-   
+
     //Variáveis da lógica de add Item
-    const[searchedItem, setSearchedItem] = useState('');  
-    
-   
+    const[strSearchedItem, setSearchedItem] = useState('');
+
+
     //Variáveis Boolean's
-    const [modalVisible, setModalVisible] = useState(false)
+    const [isShowingModal, setShowingModal] = useState(false)
 
-     
 
-    function openOptionsModal() {     
-        if(searchedItem) {
-            setModalVisible(true)        
+
+    function openModal() {
+        if(strSearchedItem) {
+            setShowingModal(true)
         } else {
-            setModalVisible(false)
-        }       
+            setShowingModal(false)
+        }
     }
-    
-   
-    function addChosenItem(item) {    
-        props.changeData(item, item.get("itemQuantidade"));
+
+
+    function addChosenItem(objItem, objItemInformation) {
+        props.addItem(objItem, objItemInformation);
         setSearchedItem('')
-          
-      
     }
-   
-    function onCloseModal() {
-        setModalVisible(false);    
-        props.refreshListaCompras();    
+
+    function closeModal() {
+        setShowingModal(false);
+        props.refreshItemList();
     }
 
     return(
-        
-        <Container>    
+
+        <Container>
             <OptionListModal
             isToStock={props.isToStock}
-            modalVisible={modalVisible} 
-            searchedItem={searchedItem} 
-            closeModal = {onCloseModal}
-            addItem={addChosenItem}
+            isToRecipe={props.isToRecipe}
+            isShowingModal={isShowingModal}
+            strSearchedItem={strSearchedItem}
+            onCloseModal = {closeModal}
+            addChosenItem={addChosenItem}
             setSearchedItem={setSearchedItem}
-           />   
-                                                                                                                                                                                                                                                                                                                                                                                       
-                <InputContainer >  
-                    <InputContent>
-                        <InputAutoComplete 
-                                placeholder="Do que você precisa?"
-                                value={searchedItem}                                                          
-                                onChangeText={(text) => setSearchedItem(text)}
-                                onEndEditing={(text) => openOptionsModal(text)}
-                              >                            
-                            </InputAutoComplete>    
-                    </InputContent>                
-                  
-                </InputContainer>   
-        </Container>       
+           />
 
-       
+                <InputContainer style={props.isToStock? {borderBottomColor:'#FFF'}: {borderBottomColor:'#4ABFBF'}}>
+                    <InputContent >
+                        <InputAutoComplete
+                                style={props.isToStock? {color: '#FFF'}:{color: '#4ABFBF'}}
+                                placeholder="O que você vai comprar hoje?"
+                                placeholderTextColor={props.isToStock? '#FFF':'#4ABFBF'}
+                                value={strSearchedItem}
+                                onChangeText={(text) => setSearchedItem(text)}
+                                onEndEditing={() => openModal()}
+                              >
+                            </InputAutoComplete>
+                    </InputContent>
+
+                </InputContainer>
+        </Container>
+
+
     )
 }

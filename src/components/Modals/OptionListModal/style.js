@@ -6,7 +6,7 @@ import styled from 'styled-components/native'
 //     contentContainerStyle: props => {
 //         return  {
 //             flex: 1
-            
+
 //         }
 //     }
 // })
@@ -29,32 +29,67 @@ export const Header = styled.View`
     height: 40px;
 `
 
-export const OptionContent = styled.View`
-    height: 70px;
+export const OptionContainer = styled.View`
+  margin-top: 5px;
+  
+`
+
+export const OptionContent = styled.View`     
+    height: 90px;
     width: 100%;
     background-color: #337984;
     flex-direction: row;
     justify-content: space-between;
-    padding-left: 80px;
-    align-items: center;
-    margin-bottom: 1px;
+    padding-left: 20px;
+    align-items: center;    
 `
 
-export const OptionText = styled.Text`
-    /* color: #C3EAEA; */
-    /* font-family: Arial; */
-    font-size: 26px;
-    font-weight: bold;
-    font-style: italic;
+export const OptionText = styled.View`    
+    flex-direction: column;
+    justify-content: space-between;  
+    width: 58%;
 `
 
-// export const PickerContainer = styled.View``
+export const OptionInput = styled.View`    
+    flex-direction: row;
+    align-items: center;  
+    justify-content: space-between;
+ 
+`
 
-export const InputContainer = styled.View`   
-  
+export const InputPortion = styled.TextInput`
+    border-bottom-width: 1px;
+    border-color: #C3EAEA;
+    width: 70px;
+    color: #C3EAEA;
+    font-size:18px;
+`
+
+export const Title = styled.Text`
+    /*font-family: 'Arial', sans-serif; */
+    margin-top: 5px;
+    color: #C3EAEA;
+    font-size: 24px;
+   
+`
+
+export const TouchableTitle = styled.TouchableOpacity`    
+   padding-left:10px;
+   background-color:#337984;
+   border-radius: 30px;
+   elevation: 5;
+`
+
+export const Description = styled.Text`    
+    color: rgba(195, 234, 234, 0.6);
+    font-size:15px;
+    
+`
+
+export const InputContainer = styled.View`     
     width: 100%;      
     background-color:  #68CACA;           
-    elevation: 10;
+    elevation: 10;  
 `
 
 export const InputContent = styled.View`     
@@ -62,11 +97,16 @@ export const InputContent = styled.View`
 `
 
 export const InputAutoComplete = styled.TextInput`
-    font-size: 18px;
-    font-style: italic;   
-    font-size: 15px;
+    font-size: 25px;
+    font-style: italic;
+    color: #FFF;
+    font-weight: bold;
 `
 
 export const ContainerChips = styled.View`
     flex-direction: row;
 `
+
+export const CloseIcon = styled.TouchableOpacity``
+
+

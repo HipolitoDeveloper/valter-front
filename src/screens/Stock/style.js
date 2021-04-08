@@ -5,9 +5,10 @@ export const Container = styled.View`
     background-color: #68CACA;
 `
 
-export const HeaderContainer = styled.View`    
-    flex: 1;
-
+export const HeaderContainer = styled.View`
+    height: 13%;
+    padding-top:20px;
+  
 `
 
 export const Header = styled.View `    
@@ -22,7 +23,7 @@ export const HeaderTitle = styled.Text`
     font-weight: bold;
     font-size: 25px;   
     padding-left: 15px; 
-     margin-top: 15px;
+    margin-top: 15px;
 `
 
 export const InputContainer = styled.View `  

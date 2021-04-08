@@ -1,266 +1,341 @@
-import React, {useEffect, useState} from 'react'
+import React, { useState } from "react";
 
-import {Container,
-        Header,
-        OptionContent, 
-        OptionText, 
-        PickerContainer, 
-        AddButtom,
-        InputContainer,
-        InputContent,
-        InputAutoComplete,
-        ContainerChips} from './style'
+import {
+  CloseIcon,
+  Container,
+  Description,
+  Header,
+  InputAutoComplete,
+  InputContainer,
+  InputContent,
+  InputPortion,
+  OptionContainer,
+  OptionContent,
+  OptionInput,
+  OptionText,
+  Title,
+  TouchableTitle
+} from "./style";
 
-import {Modal, TouchableOpacity, StyleSheet, View, Text} from 'react-native'
-import { Picker } from '@react-native-picker/picker'
+import { Alert, Text, View, StyleSheet, FlatList, TouchableOpacity, Modal } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import Icon from "react-native-vector-icons/FontAwesome";
+import Swipeable from 'react-native-gesture-handler/Swipeable'
+// import Modal from 'react-native-modal';
 
-import MaterialChip from 'react-native-material-chip'
-import Icon from 'react-native-vector-icons/FontAwesome'
-
-import data from '../../../data'
 import Parse from "parse/react-native.js";
 
-
-export default props => {  
-    const array = [{id: 1, label: '0', value: 0},{id: 2, label: '1',  value: 1}, {id: 3, label: '2',  value: 2}, {id: 4, label: '3',  value: 3}];      
+import arrPickerData from '../../../common/picker/portionData'
 
 
-
+export default props => {
    //Variáveis da lógica de add Item
-    const [searchedItem, setSearchedItem] = useState('')
-    const [chosenItems, setChosenItems] = useState([])
+    const [strSearchedItem, setSearchedItem] = useState('')
+    const [arrChosenItems, setChosenItems] = useState([])
+    const [objChosenItem, setObjChosenItem] = useState([])
 
-    //Lista principais 
-    const[itensFiltered, setItensFiltered] = useState([]) //Lista de Visualização
-    const[itensData, setItensData] = useState([]) //Array de Itens
-    // const[itens, setItens] = useState([]);  
+    //Lista principais
+    const[arrItemsFiltered, setItemsFiltered] = useState([]) //Lista de Visualização
+    const[arrItemList, setItemList] = useState([]) //Array de Itens
+    // const[itens, setItens] = useState([]);
 
-    function onOpenModal() {  
-        setSearchedItem(props.searchedItem)
-        loadItens();     
-        
-        
-      
+    async function onOpenModal() {
+        setSearchedItem(props.strSearchedItem)
+        await loadItems();
+
     }
 
-    async function loadItens() {
-   
-        try {            
+    async function loadItems() {
+
+        try {
             const Item = Parse.Object.extend("itens")
             const queryItem = new Parse.Query(Item)
-            queryItem.find().then((itens) => {                 
-                buildCompleteList(props.searchedItem, itens)         
-                setItensData(itens)       
-            });    
+            queryItem.include(['marca_id.nome'])
+
+            queryItem.find().then((arrItems) => {
+                loadItemList(props.strSearchedItem, arrItems)
+                setItemList(arrItems)
+            });
 
         } catch (error) {
             alert(`Failed to retrieve the object, with error code: ${JSON.stringify(error.message)}`)
         }
     }
 
-    function updateList(itensFiltered) {
-        const listUpdated = itensFiltered.filter(d => d.get("descricao") != '')
-        setItensFiltered(listUpdated)
+    function updateList(arrItemsFiltered) {
+        const arrItemListFiltered  = arrItemsFiltered.filter(item => item.get("descricao") !== '')
+        setItemsFiltered(arrItemListFiltered)
     }
 
-    function buildCompleteList(searchedItem, itens) {   
-           if(searchedItem) {             
-           
-            const regex = new RegExp(`${searchedItem.trim()}`, 'i')
-            let listFiltered;
-            if(itens == null) {
-               
-                listFiltered = itensData.filter(i =>  i.get('descricao').search(regex) >= 0)     
+    function loadItemList(strSearchedItem, arrItems) {
+           if(strSearchedItem) {
+
+            const regex = new RegExp(`${strSearchedItem.trim()}`, 'i')
+            let arrItemsFiltered = [];
+            if(!arrItems) {
+
+                arrItemsFiltered = arrItemList.filter(i =>  i.get('descricao').search(regex) >= 0)
             } else {
-                listFiltered = itens.filter(i =>  i.get('descricao').search(regex) >= 0)  
-            }               
-            
-            listFiltered.forEach(d => {
-                d.set("isChose", false)
+                arrItemsFiltered = arrItems.filter(i =>  i.get('descricao').search(regex) >= 0)
+            }
+
+            arrItemsFiltered.forEach(item => {
+              item.set("isChose", false)
+              item.set("portionType", "unidade")
+
             });
-            
-            setItensFiltered(listFiltered)  
-            setSearchedItem(searchedItem)        
-            
-             props.setSearchedItem(searchedItem)             
-           
-        } else {
-            setItensFiltered([])
-            setSearchedItem(searchedItem)                        
-        }    
-        
+
+            setItemsFiltered(arrItemsFiltered)
+            setSearchedItem(strSearchedItem)
+            props.setSearchedItem(strSearchedItem)
+
+           } else {
+            setItemsFiltered([])
+            setSearchedItem(strSearchedItem)
+
+        }
+
     }
 
-//    async function changeItemQuantity(quantidade, item) {
-//         const ItemUsuario = Parse.Object.extend("itens_usuarios")
-//         const queryItemUsuario = new Parse.Query(ItemUsuario)           
-//         queryItemUsuario.equalTo("item_id",  item)
-//         const verificarItem = await queryItemUsuario.find();
-       
-//         if(verificarItem.length == 0) {
-//             itensFiltered.map(d => {
-//                 if(d.id == item.id) {
-//                     d.set("itemQuantidade", quantidade)                
-                   
-//                     if(quantidade == 0 ) {                
-//                         d.set("isChose", false)
-//                     } else {                    
-//                         d.set("isChose", true)
-//                     }                  
-//                 }
-//             })         
-          
-//             updateList(itensFiltered);      
-//         } else {
-//             alert(`Item já existente na lista de compras, gostaria de excluir o item?`)
+    async function  updateItemQuantity(objItem) {
+        let objItemVerifier = [];
+        if(props.isToStock) {
+            const UserItem = Parse.Object.extend("itens_usuarios")
+            const queryItemUser = new Parse.Query(UserItem)
+            queryItemUser.equalTo("item_id",  objItem)
+            objItemVerifier = await queryItemUser.find();
 
-//         }
-             
-//     }
+        } else {
+            const itemList = Parse.Object.extend("listas_compras_itens")
+            const queryItemList = new Parse.Query(itemList)
+            queryItemList.equalTo("item_id",  objItem)
+            objItemVerifier = await queryItemList.find();
+        }
 
-    async function changeItemQuantity(quantidade, item) {
-        
-        let verificarItem = [];
+        // if(objItemVerifier.length === 0) {
+            arrItemsFiltered.forEach(item => {
+                if(item.id === objItem.id) {
+                    if(objItem.get("quantity") == 0 ) {
+                      item.set("isChose", false)
+                    } else {
+                      item.set("isChose", true)
+                    }
+                }
+            })
+
+
+            updateList(arrItemsFiltered);
+        // } else {
+        //     Alert.alert(
+        //         "Atenção",
+        //         "Item já existente na lista de compras, gostaria de excluir?",
+        //         [
+        //             {
+        //                 text: "Não",
+        //             },
+        //             {
+        //                 text: "Sim",
+        //                 onPress: () => deleteItem(objItem)
+        //             }
+        //         ]
+        //     );
+        // }
+    }
+
+    function changePortionType(objItem, strPortionType) {
+      arrItemsFiltered.map(item => {
+        if(item.id == objItem.id) {
+          item.set("portionType", strPortionType)
+        }
+      })
+      updateList(arrItemsFiltered)
+  }
+
+    async function createChosenItemsList(objItem) {
+        const objItemInformation = {quantity: parseInt(objItem.get("quantity")), portionType: objItem.get("portionType")};
+        objItem.revert();
+
+        arrChosenItems.push(objItem)
+        setChosenItems(arrChosenItems)
+        props.addChosenItem(objItem, objItemInformation)
+        loadItemList('', null);
+    }
+
+    async function deleteItem(objItem) {
         if(props.isToStock) {
 
-            const ItemUsuario = Parse.Object.extend("itens_usuarios")
-            const queryItemUsuario = new Parse.Query(ItemUsuario)           
-            queryItemUsuario.equalTo("item_id",  item)
-            verificarItem = await queryItemUsuario.find();
+            const UserItem = Parse.Object.extend("itens_usuarios")
+            const queryItemUser = new Parse.Query(UserItem)
+            queryItemUser.equalTo("item_id",  objItem)
+            queryItemUser.first().then((userItem) => {
+                userItem.destroy().then(() =>
+                console.warn("Item deletado")
+                );
+            });
 
         } else {
 
-            const ListaCompraItem = Parse.Object.extend("listas_compras_itens")
-            const queryListaCompraItem = new Parse.Query(ListaCompraItem)           
-            queryListaCompraItem.equalTo("item_id",  item)
-            verificarItem = await queryListaCompraItem.find();
+            const ItemList = Parse.Object.extend("listas_compras_itens")
+            const queryItemList = new Parse.Query(ItemList)
+            queryItemList.equalTo("item_id",  objItem)
+            queryItemList.first().then((itemList) => {
+                itemList.destroy().then(() =>
+                console.warn("Item deletado")
+                );
+            });
         }
-       
-        if(verificarItem.length == 0) {
-            itensFiltered.map(d => {
-                if(d.id == item.id) {
-                    d.set("itemQuantidade", quantidade)                
-                   
-                    if(quantidade == 0 ) {                
-                        d.set("isChose", false)
-                    } else {                    
-                        d.set("isChose", true)
-                    }                  
-                }
-            })         
-          
-            updateList(itensFiltered);      
-        } else {
-            alert(`Item já existente na lista de compras, gostaria de excluir o item?`)
-
-        }
-             
     }
 
-    function createChosenItemsList(item) {
-        chosenItems.push(item)
-        setChosenItems(chosenItems)
-        props.addItem(item)
-        // console.warn(chosenItems)        
-    }
-
-    function deleteChosenItem(item) {
-        chosenItems.forEach((i, index) => {
-            if(item.id == i.id) {
-                chosenItems.splice(index, 1)
+    function deleteChosenItem(objItem) {
+        arrChosenItems.forEach((i, index) => {
+            if(objItem.id === i.id) {
+                arrChosenItems.splice(index, 1)
             }
-        })      
-        setChosenItems(chosenItems)
-        updateList(itensFiltered);  
+        })
+        setChosenItems(arrChosenItems)
+        updateList(arrItemsFiltered);
     }
 
-      
+    const getOptionText = (objItem) => {
+      if (objItem.get("isChose")) {
+        return (
+          <OptionText>
+            <TouchableTitle onPress={() => {createChosenItemsList(objItem)}}>
+                <Title>
+                  {objItem.get('descricao')}
+                </Title>
+              </TouchableTitle>
+              <Description>
+                  {objItem.get('marca_id')?.get('nome')}
+              </Description>
+          </OptionText>
+        )
+      } else {
+        return (
+          <OptionText>
+            <Title>
+              {objItem.get('descricao')}
+            </Title>
 
+            <Description>
+              {objItem.get('marca_id')?.get('nome')}
+            </Description>
+          </OptionText>
+        )
+      }
+  }
     return (
         <View>
-            <Modal                
-            animationType='slide'               
-            visible={props.modalVisible} 
-            onShow={() => {onOpenModal()}}               
+          <Modal
+            animationType='slide'
+            visible={props.isShowingModal}
+            onShow={() => {onOpenModal()}}
             onRequestClose={() => {
-                props.closeModal()
-                setChosenItems([])
-                setItensFiltered([])                   
+              props.onCloseModal()
+              setChosenItems([])
+              setItemsFiltered([])
             }}>
                 <Container>
-                    <TouchableOpacity onPress={() => {
-                            props.closeModal()
+                    <CloseIcon onPress={() => {
+                            props.onCloseModal()
                             setChosenItems([])
-                            setItensFiltered([]) }}>
-                        <Header>                            
-                            <Icon name='angle-double-down' size={20} color='black'  />                                                
+                            setItemsFiltered([]) }}>
+                        <Header>
+                            <Icon name='angle-double-down' size={20} color='black'  />
                         </Header>
-                    </TouchableOpacity>
-                    <InputContainer >  
+                    </CloseIcon>
+                    <InputContainer >
                         <InputContent>
-                            <InputAutoComplete 
+                            <InputAutoComplete
                                     placeholder="Procure o item desejado abaixo..."
-                                    value={searchedItem}                                
-                                    onChangeText={(text) => buildCompleteList(text, null)}
-                                    autoFocus = {true}  
-                                    >                            
-                                </InputAutoComplete>    
-                        </InputContent>                
-                    
-                    </InputContainer> 
-
-                    {itensFiltered?.map((item, index) => {
-                        return(
-                            <OptionContent key={index}>
-
-                                {item.get("isChose") && 
-                                <TouchableOpacity onPress={() => createChosenItemsList(item)}>
-                                    <Icon name='plus' size={20} color='white'  />
-                                </TouchableOpacity>}
-
-                                <OptionText style={item.get("isChose") ? {color:'#FFF'}:{color: '#C3EAEA'}}>
-                                    {item.get('descricao')}
-                                </OptionText>
-                                <Picker    
-                                    mode={'dropdown'}
-                                    dropdownIconColor='#68CACA'                                            
-                                    style={[item.get("isChose") ? {color:'#FFF'}:{color: 'black'}, styles.picker]}
-                                
-                                    selectedValue = {item.get("itemQuantidade")}
-                                    onValueChange={(itemValue, itemIndex) => changeItemQuantity(itemValue, item)}
+                                    placeholderTextColor="#FFF"
+                                    value={strSearchedItem}
+                                    onChangeText={(text) => loadItemList(text, null)}
+                                    autoFocus = {true}
                                     >
-                                        {array.map((picker, index) => {                        
-                                            return (<Picker.Item label={`${picker.label}`} value={picker.value} key={index}/>)
-                                        })}                  
-                                </Picker>     
-                        </OptionContent>        
-                        )
-                    })}     
+                                </InputAutoComplete>
+                        </InputContent>
+
+                    </InputContainer>
+                    <OptionContainer>
+                    <FlatList
+                      data={arrItemsFiltered}
+                      keyExtractor={i => `${i.id}`}
+                      renderItem={({ item }) =>
+                        <OptionContent>
+                          {getOptionText(item)}
+
+                          <OptionInput>
+                            <InputPortion
+                              keyboardType = {'numeric'}
+                              onChangeText={(text) => item.set("quantity", text)}
+                              onEndEditing={() => updateItemQuantity(item)}
+                            />
+                            <Picker
+                              mode={'dropdown'}
+                              dropdownIconColor='#68CACA'
+                              style={styles.picker}
+                              selectedValue={item.get("portionType")}
+                              onValueChange={(itemValue, itemIndex) => changePortionType(item, itemValue)}
+                            >
+
+                              {arrPickerData.map((picker, index) => {
+                                return (<Picker.Item label={`${picker.label}`} value={picker.value} key={index} />)
+                              })}
+                            </Picker>
+                          </OptionInput>
+                        </OptionContent>
+                      }/>
+                      </OptionContainer>
                     {/* <ContainerChips>
-                        {chosenItems.map((item, index) => {
-                            return(                             
+                        {arrChosenItems.map((item, index) => {
+                            return(
                             <MaterialChip
                             key={index}
                             text={item.itemDescription}
-                            checked={true}                          
-                            onDelete={() => deleteChosenItem(item)}                      
-                            />   
+                            checked={true}
+                            onDelete={() => deleteChosenItem(item)}
+                            />
                         )})
                     }
                     </ContainerChips>                                             */}
+
                 </Container>
             </Modal>
         </View>
     )
 }
 
-const styles = StyleSheet.create({    
+const styles = StyleSheet.create({
     picker: {
-        height: 20, 
-        width: 90, 
+        height: 20,
+        width: 88,
+        color: '#C3EAEA',
+        marginLeft: 2
         // position: 'absolute',
         // right: 90,
-    }, 
- 
-  
+    },
+    right: {
+      flex: 1,
+      backgroundColor: '#68CACA',
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    excludeText: {
+      color: '#FFF',
+      fontSize: 20,
+      margin: 10
+    },
+    excludeIcon: {
+      marginLeft: 10
+    },
+    left: {
+      backgroundColor: '#68CACA',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      paddingHorizontal: 20
+    },
+
+
 })

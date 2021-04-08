@@ -1,23 +1,16 @@
 import styled from 'styled-components/native'
-import commonStyles from '../../commonStyles'
+import commonStyles from '../../common/commonStyles'
 import {StyleSheet} from 'react-native'
 
 
 export const Container = styled.View`    
     align-items: center;     
-    height: 140px;    
-
+    height: 60px;
 `;
 
-export const InputContainer = styled.View`   
-    /* margin-top:50px; */
-    width: 350px;  
-    border-radius: 30px;        
-    background-color:  #4ABFBF;           
-    elevation: 10;
-    position: absolute;
-    top: 35px; //Modal está influenciando na distancia do TOP  
- 
+export const InputContainer = styled.View`      
+    width: 300px; 
+    border-bottom-width: 1px;          
 `
 
 export const InputContent = styled.View`     
@@ -27,6 +20,7 @@ export const InputContent = styled.View`
 export const InputAutoComplete = styled.TextInput`
     font-size: 18px;
     font-style: italic;
-    border-radius: 30px;     
-    font-size: 15px;
+    border-radius: 30px;    
+    font-weight: bold;
+  
 `

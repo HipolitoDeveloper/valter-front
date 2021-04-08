@@ -1,8 +1,10 @@
 import styled from 'styled-components/native'
+import {StyleSheet} from 'react-native'
 
 export const TabArea = styled.View`
+    border-top-width: ${StyleSheet.hairlineWidth}px;
     height: 60px;
-    background-color: #337984;
+    background-color: white;
     flex-direction: row;
    
 `;

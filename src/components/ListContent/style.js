@@ -9,7 +9,7 @@ export const Container  = styled.View`
 export const ItemContainer  = styled.View`
     flex-direction: column;   
     justify-content: center;    
-    height: 66px;    
+    height: 90px;    
     background-color: white;  
 `
 
@@ -20,19 +20,46 @@ export const ItemContent  = styled.View`
   align-items: center;
 `
 
-export const ItemDescription = styled.Text`
+export const ItemText = styled.View`    
+    flex-direction: column;
+    justify-content: space-between;  
+    width: 58%;  
+    
+`
+
+export const ItemTitle = styled.Text`
     /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', 'Arial', 'sans-serif' ; */
-    font-size: 18px;
+    font-size: 15px;
     font-style: italic;
     font-weight: bold;
+`
+export const ItemDescription = styled.Text`
+    color: rgba(0, 0, 0, 0.6);
+    font-size:12px;
+`
+
+export const ItemInput = styled.View`   
+    margin-right: 10px;
+    flex-direction: row;
+    align-items: center;  
+    justify-content: space-between; 
+`
+
+export const InputPortion = styled.TextInput`
+    margin-right: 20px;
+    margin-bottom: 10px;
+    border-bottom-width: ${StyleSheet.hairlineWidth}px;
+    border-color: black;
+    width: 50px;
+    color: black;
+    font-size:15px;
 `
 
 export const TitleContainer  = styled.View`
     flex-direction: column;   
     justify-content: center;    
     height: 50px;  
-    background-color: #F7F7F7;
-    border-width: ${StyleSheet.hairlineWidth}px;    
+    background-color: #F7F7F7;   
 `
 
 export const TitleContent = styled.View`
@@ -47,13 +74,6 @@ export const TitleDescription = styled.Text`
     font-style: italic;
     font-weight: bold;
     color: #68CACA;
-`
-
-export const PickerContainer = styled.Text`
-    margin-right: 10px;
-    border-width: ${StyleSheet.hairlineWidth}px;
-    border-radius: 30px;
-    border-color: #68CACA;     
 `
 
 

@@ -1,4 +1,1 @@
-Meu repositório Git ==================== 
-Apenas repositório Git
-
-teste
+It's a project focused in help people on their time at market, creating the possibility of make a shopping list as complete as  any other form that the people use in the daily life. This project will give the facility to discover which product they should buy, because this products is running out or reaching in their validity date. To resume, in every buy that you do, the app will keep the information and compare them with the stock of your house and inform you what you have to do at the market, which thing you should buy and which of them should be priority. 

@@ -4,7 +4,7 @@ import {TabArea, TabItem, TabItemCenter} from './style'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 
-export default ({ state, navigation }) => {    
+export default ({ state, navigation }) => {
 
     const goTo = (screenName) => {
         navigation.navigate(screenName);
@@ -13,16 +13,17 @@ export default ({ state, navigation }) => {
     return (
         <TabArea>
             <TabItem onPress={()=>goTo('Home')}>
-                <Icon style={{opacity: state.index===0? 1 : 0.5}} name='home' size={32} color='white'  />                                                
+              <Icon style={{color: state.index ===0? '#4ABFBF' : '#E0D9D9'}} name='cart-plus' size={32} color='white'  />
             </TabItem>
-            <TabItemCenter>
-                <TouchableOpacity onPress={()=>goTo('Stock')}>
-                    <Icon name='plus' style={{opacity: state.index===1? 1 : 0.5}} size={32} color='#337984'  />    
-                </TouchableOpacity>
-            </TabItemCenter>    
-            <TabItem onPress={()=>goTo('Recipe')}>
-                <Icon style={{opacity: state.index===2? 1 : 0.5}} name='book' size={32} color='white'  />      
-            </TabItem>                 
+            <TabItem onPress={()=>goTo('Stock')}>
+              <Icon style={{color: state.index===1? '#4ABFBF' : '#E0D9D9'}} name='bars' size={32} color='white'  />
+            </TabItem>
+            <TabItem onPress={()=>goTo('Recipes')}>
+              <Icon style={{color: state.index===2? '#4ABFBF' : '#E0D9D9'}} name='book' size={32} color='white'  />
+            </TabItem>
+            <TabItem onPress={()=>goTo('Notification')}>
+              <Icon style={{color: state.index===3? '#4ABFBF' : '#E0D9D9'}} name='comments' size={32} color='white'  />
+            </TabItem>
         </TabArea>
     );
 }

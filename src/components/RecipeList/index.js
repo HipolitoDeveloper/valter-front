@@ -1,29 +1,60 @@
 import React from 'react'
-import {FlatList} from 'react-native'
+import { FlatList, Text } from "react-native";
 
-import {ListContainer, List} from './style'
-import RecipeListContent from '../RecipeListContent'
+import {
+  ListContainer,
+  List,
+  Container,
+  ContentAble,
+  ContentTitleAble,
+  ContentDisable,
+  ContentTextContainer,
+  ContentTitleDisable,
+  ContentObservationDisable,
+  CreateRecipeContainer, CreateRecipeText,
+} from './style'
 
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 export default props => {
-    return (
-        <ListContainer style={props.listStyle}>               
-            <List>             
-        
-        
-            {/* {this.state.list.map((item, index) => {
-                return (<ListContent key={index} {...item} list={item} setQuantityValue={this.setQuantityValue} />)
-            })} */}
-                {/* <FlatList                      
-                data={props.data} 
-                keyExtractor={i => `${i.id}`}
-                renderItem={({item}) => <RecipeListContent {...item} 
-                />} /> */}
 
-                <RecipeListContent />
-                            
-            </List>                       
-        </ListContainer>   
+  const renderContent = ({item}) => {
+    if(item.get("permitir_online") === true) {
+      return (
+        <ContentAble>
+          <Icon name={'book'} color={'#4ABFBF'} size={30} />
+          <ContentTitleAble>
+            {item.get("nome")}
+          </ContentTitleAble>
+        </ContentAble>
+      )
+    } else {
+      return (
+        <ContentDisable>
+          <Icon name={'book'} color={'#7D7575'} size={30} />
+          <ContentTextContainer>
+            <ContentTitleDisable>
+              {item.get("nome")}
+            </ContentTitleDisable>
+            <ContentObservationDisable>
+              Está faltando achocolatado, creme de leite
+            </ContentObservationDisable>
+          </ContentTextContainer>
+        </ContentDisable>
+      )
+    }
+  }
+
+    return (
+        <ListContainer style={props.listStyle}>
+            <List>
+                <FlatList
+                data={props.arrRecipes}
+                keyExtractor={i => `${i.id}`}
+                renderItem={renderContent}
+                />
+            </List>
+        </ListContainer>
 
     )
 }
