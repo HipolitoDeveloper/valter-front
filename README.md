@@ -136,7 +136,15 @@ Você conseguirá acessar o front-end sem problemas. Mas para fazer a conexão c
 
 ![N|Solid][telas_login]      ![N|Solid][telas_cadastro]
 
-![N|Solid][telas_lista_compra]      ![N|Solid][telas_despensa] ![N|Solid][telas_adicionar_item]
+![N|Solid][telas_lista_compra]      ![N|Solid][telas_adicionar_item] 
+
+![N|Solid][telas_despensa]    ![N|Solid][telas_notificacoes]
+
+![N|Solid][telas_receitas]      ![N|Solid][telas_receitas_recomendadas]
+
+![N|Solid][telas_receita_listagem]      ![N|Solid][telas_criador_receita_um] 
+
+![N|Solid][telas_criador_receita_dois] ![N|Solid][telas_criador_receita_tres] 
 
 -
 
@@ -188,6 +196,13 @@ Project Link: [https://github.com/HipolitoDeveloper/react-native-shopping-list](
 [telas_cadastro]: images/telas_cadastro.png
 [telas_lista_compra]: images/telas_lista_compra.png
 [telas_despensa]: images/telas_despensa.png
+[telas_notificacoes]: images/telas_notificacoes.png
 [telas_adicionar_item]: images/telas_adicionar_item.png
 
-[telas_criacao_receitas]: images/telas_criacao_receitas.png
+[telas_receitas]: images/telas_receitas.png
+[telas_receitas_recomendadas]: images/telas_receitas_recomendadas.png
+[telas_receita_listagem]: images/telas_receita_listagem.png
+[telas_criador_receita_um]: images/telas_criador_receita_um.png
+[telas_criador_receita_dois]: images/telas_criador_receita_dois.png
+[telas_criador_receita_tres]: images/telas_criador_receita_tres.png
+
