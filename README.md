@@ -146,18 +146,13 @@ Você conseguirá acessar o front-end sem problemas. Mas para fazer a conexão c
 
 ![N|Solid][telas_criador_receita_dois] ![N|Solid][telas_criador_receita_tres] 
 
--
 
-<!-- ![N|Solid](https://i.imgur.com/XUZTTsx.png)     ![N|Solid](https://i.imgur.com/MJ2aPtU.png)  -->
-
-
-<!-- ROADMAP -->
 ## Atualizações Futuras
 
-Implementação do Machine Learning controlando a despensa
-Criação do módulo de criação de receitas
-Criação do módulo de Notificações
-Implementação de Push Notifications
+* Implementação do Machine Learning controlando a despensa
+* Criação do módulo de criação de receitas
+* Criação do módulo de Notificações
+* Implementação de Push Notifications
 
 
 
