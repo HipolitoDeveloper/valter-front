@@ -27,22 +27,23 @@
   <summary>Você encontrará</summary>
   <ol>
     <li>
-      <a href="#about-the-project">Sobre o projeto</a>
+      <a href="sobre-o-projeto">Sobre o projeto</a>
       <ul>
-        <li><a href="#built-with">Tecnologias</a></li>
+        <li><a href="#funcionalidades">Funcionalidades</a></li>
+        <li><a href="#tecnologias">Tecnologias</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Iniciando o projeto</a>
+      <a href="#iniciando-o-projeto">Iniciando o projeto</a>
       <ul>
-        <li><a href="#prerequisites">Pré-requisitos</a></li>
-        <li><a href="#installation">Instalação</a></li>
+        <li><a href="#pré-requisitos">Pré-requisitos</a></li>
+        <li><a href="#instalação">Instalação</a></li>
       </ul>
     </li>
     <!-- <li><a href="#usage">Usabilidade</a></li> -->
-    <li><a href="#usage">Telas</a></li>
+    <li><a href="#telas">Telas</a></li>
     <li><a href="#roadmap">Futuras atualizações</a></li> 
-    <li><a href="#contact">Contatos</a></li>   
+    <li><a href="#contatos">Contatos</a></li>   
   </ol>
 </details>
 
@@ -51,7 +52,7 @@
 <!-- ABOUT THE PROJECT -->
 ## Sobre o Projeto
 
-[![Product Name Screen Shot][product-screenshot]]
+![Product Name Screen Shot][product-screenshot]
 
 Quanto eu tenho de leite na geladeira ainda? 
 Será que eu tenho leite condensado pra fazer meu bolo? 
@@ -73,7 +74,7 @@ O que eu tenho na minha geladeira?
 
 É um aplicativo prático, onde você conseguirá carregar toda a sua despensa no seu bolso para onde você quiser e eu te garanto que os jeitos para você controlar sua despensa será o mais intuitivo possível.
 
-Eu gosto de dividir ele em três módulos.
+## Funcionalidades
 
 * Lista de compras
 
@@ -133,9 +134,9 @@ Você conseguirá acessar o front-end sem problemas. Mas para fazer a conexão c
 <!-- USAGE EXAMPLES -->
 ## Telas
 
-![N|Solid](telas_login)      ![N|Solid](telas_cadastro) 
+![N|Solid][telas_login]      ![N|Solid][telas_cadastro]
 
-![N|Solid](telas_lista_compra)      ![N|Solid](telas_despensa) ![N|Solid](telas_adicionar_item) 
+![N|Solid][telas_lista_compra]      ![N|Solid][telas_despensa] ![N|Solid][telas_adicionar_item]
 
 -
 
