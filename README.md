@@ -1,12 +1,11 @@
-[![Contributors][contributors-shield]][contributors-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
-It's a project focused in help people on their time at market, creating the possibility of make a shopping list as complete as  any other form that the people use in the daily life. This project will give the facility to discover which product they should buy, because this products is running out or reaching in their validity date. To resume, in every buy that you do, the app will keep the information and compare them with the stock of your house and inform you what you have to do at the market, which thing you should buy and which of them should be priority. 
+<!-- It's a project focused in help people on their time at market, creating the possibility of make a shopping list as complete as  any other form that the people use in the daily life. This project will give the facility to discover which product they should buy, because this products is running out or reaching in their validity date. To resume, in every buy that you do, the app will keep the information and compare them with the stock of your house and inform you what you have to do at the market, which thing you should buy and which of them should be priority.  -->
 
 
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/HipolitoDeveloper/react-native-shopping-liste">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -28,19 +27,20 @@ It's a project focused in help people on their time at market, creating the poss
   <summary>Você encontrará</summary>
   <ol>
     <li>
-      <a href="#about-the-project">Sobre o projetot</a>
+      <a href="#about-the-project">Sobre o projeto</a>
       <ul>
         <li><a href="#built-with">Tecnologias</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Começando</a>
+      <a href="#getting-started">Iniciando o projeto</a>
       <ul>
         <li><a href="#prerequisites">Pré-requisitos</a></li>
         <li><a href="#installation">Instalação</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usabilidade</a></li>
+    <!-- <li><a href="#usage">Usabilidade</a></li> -->
+    <li><a href="#usage">Telas</a></li>
     <li><a href="#roadmap">Futuras atualizações</a></li> 
     <li><a href="#contact">Contatos</a></li>   
   </ol>
@@ -49,69 +49,97 @@ It's a project focused in help people on their time at market, creating the poss
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## Sobre o Projeto
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]]
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+Quanto eu tenho de leite na geladeira ainda? 
+Será que eu tenho leite condensado pra fazer meu bolo? 
+Quais as receitas eu consigo fazer com o que eu tenho em casa?
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
+São essas as perguntas que todos fazem quando já estão no mercado e acabam não comprando tudo que deveriam comprar, frustrante né?
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have have contributed to expanding this template!
+Mas existem algumas soluções para resolver esse problema, algumas delas são:
+* Escrever os itens que você precisar comprar em um pedaço de papel velho na sua mesa.
+* Decorar todos os itens da sua despensa ou geladeira. 
+* Ligar para alguém que está em casa ao mesmo tempo que você faz as compras, para garantir que você não esqueça de nada.
 
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+Problemas resolvidos, certo?
 
-### Built With
+Acho que não, todos esses pontos que eu te apresentei, além de muitos outros que você pode acabar usando no seu dia-a-dia não são eficazes, nada deles te garante agilidade e rapidez na hora de decidir o que você deve comprar no mercado.
+Mas agora eu tenho algo que pode garantir isso.
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
+O que eu tenho na minha geladeira?
+
+É um aplicativo prático, onde você conseguirá carregar toda a sua despensa no seu bolso para onde você quiser e eu te garanto que os jeitos para você controlar sua despensa será o mais intuitivo possível.
+
+Eu gosto de dividir ele em três módulos.
+
+* Lista de compras
+
+Primeiro de tudo, você administrará as suas listas de compra pelo aplicativo, tudo que você quiser comprar você poderá adicionar, manualmente, por voz, você escolhe o melhor jeito.
+Sua lista de compras será organizada de forma personalizada. Você irá informar no aplicativo qual é o mercado que você vai, caso o mercado tenha compatibilidade com o aplicativo, sua lista de compras será organizada de forma que você consiga encontrar os itens no mercado de forma fácil e rápida.
+Já resolvi um dos seus problemas não resolvi?
+
+* Despensa
+
+Após terminar suas compras do dia, você informará no aplicativo quais dos itens adicionados na lista, foram de fato comprados. Com essa confirmação, o aplicativo entenderá que todos esses itens já podem ser automaticamente adicionados na sua despensa e a partir daí que a brincadeira começa.
+
+Cada item possui um tempo útil, sendo assim, quando o tempo útil do item estiver se aproximando, o aplicativo te perguntará se determinado item pode ser excluido, se você confirmar a exclusão (ou seja, seu item foi consumido), você poderá informar ao aplicativo quando que esse item foi consumido, ensinando o aplicativo de que determinado item deveria ser excluido antes do tempo estabelecido por padrão ou que o aplicativo acertou na data de exclusão do item.
+Caso você não confirme a exclusão(ou seja, seu item não foi consumido ainda), o item não participará mais do processo de exclusão automática, aguardando então sua exclusão manual. Ao ser excluido manualmente, o aplicativo guardará essa informação e da próxima vez que esse item entrar na despensa, ele te mostrará uma nova data de exclusão, com base na que você desmontrou anteriormente.
+
+* Receitas
+
+Você acha que os itens que você coloca no aplicativo só vão servir para organização? Errado.
+O aplicativo possui algumas receitas recomendadas que podem ser consultadas por todos os usuários, porém elas possuem um filtro personalizável. Levando em consideração os itens que você possui na sua despensa, assim mostrando se você conseguirá fazer essa receita com os itens da sua casa ou não. Caso não consiga, você saberá o que falta, podendo adicionar na lista de compras.
+
+Essas receitas são padrões do sistema, mas caso você prefira, você poderá adicionar suas próprias receitas no aplicativo, deixando ao seu critério mostra-lás para outras pessoas ou não.
+
+Ambas as receitas, recomendadas ou suas próprias, participaram do filtro de "possui todos os itens para a receitaou não"
+
+Claro, isso é tudo até agora, o projeto está em desenvolvimento e até agora arrisco afirmar que tenho 40% de tudo pronto. Se você se interessou pela ideia e gostaria de apoiar, fique a vontade para entrar em contato, mostrando ideias, elogios ou até mesmo críticas.
 
 
+### Tecnologias
+
+* [React Native](https://reactnative.dev)
+* [Parse](https://parseplatform.org)
 
 <!-- GETTING STARTED -->
-## Getting Started
+## Iniciando o Projeto
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Você conseguirá acessar o front-end sem problemas. Mas para fazer a conexão com o Parse, posteriormente criarei uma conexão de testes com o Back4App, assim clones/forks poderão ser feitos sem muitos problemas.
 
-### Prerequisites
+### Pré-requisitos
 
-This is an example of how to list things you need to use the software and how to install them.
 * npm
   ```sh
   npm install npm@latest -g
   ```
 
-### Installation
+### Instalação
 
-1. Get a free API Key at [https://example.com](https://example.com)
+1. Banco de testes ainda não está pronto no Back4App
 2. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/HipolitoDeveloper/react-native-shopping-list
    ```
 3. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-
+4. Caso deseje conectar o front-end com outro Back4App Application, mude as informações no arquivo config/server-connection.js
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Telas
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+![N|Solid](telas_login)      ![N|Solid](telas_cadastro) 
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+![N|Solid](telas_lista_compra)      ![N|Solid](telas_despensa) ![N|Solid](telas_adicionar_item) 
 
+-
+
+<!-- ![N|Solid](https://i.imgur.com/XUZTTsx.png)     ![N|Solid](https://i.imgur.com/MJ2aPtU.png)  -->
 
 
 <!-- ROADMAP -->
@@ -123,9 +151,11 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 
 
 <!-- CONTACT -->
-## Contact
+## Contatos
 
 Gabriel Hipólito - hipolitodeveloper@gmail.com
+
+LinkedIn: [Linkedin](linkedin-url)
 
 Project Link: [https://github.com/HipolitoDeveloper/react-native-shopping-list](https://github.com/HipolitoDeveloper/react-native-shopping-list)
 
@@ -150,5 +180,13 @@ Project Link: [https://github.com/HipolitoDeveloper/react-native-shopping-list](
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
+[linkedin-url]: https://www.linkedin.com/in/gabriel-hipolito-b26ba215a/
+
 [product-screenshot]: images/pagina_principal.png
+[telas_login]: images/telas_login.png
+[telas_cadastro]: images/telas_cadastro.png
+[telas_lista_compra]: images/telas_lista_compra.png
+[telas_despensa]: images/telas_despensa.png
+[telas_adicionar_item]: images/telas_adicionar_item.png
+
+[telas_criacao_receitas]: images/telas_criacao_receitas.png
