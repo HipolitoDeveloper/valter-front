@@ -161,7 +161,7 @@ Você conseguirá acessar o front-end sem problemas. Mas para fazer a conexão c
 
 Gabriel Hipólito - hipolitodeveloper@gmail.com
 
-LinkedIn: [Linkedin](linkedin-url)
+LinkedIn: [https://www.linkedin.com/in/gabriel-hipolito-b26ba215a/](https://www.linkedin.com/in/gabriel-hipolito-b26ba215a/)
 
 Project Link: [https://github.com/HipolitoDeveloper/react-native-shopping-list](https://github.com/HipolitoDeveloper/react-native-shopping-list)
 
