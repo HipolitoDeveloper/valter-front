@@ -1,23 +1,8 @@
-import React, {Component} from 'react'
-import {Text, View, RefreshControl} from 'react-native'
-import {
-    Container,
-    HeaderContainer,
-    Header,
-    HeaderTitle,
-    NotificationButton,
-    InputContainer } from './style';
-
+import React, { Component } from "react";
+import { Container, HeaderContainer } from "./style";
+import { List } from "../../components/List";
+import { AutoCompleteInput } from "../../components/AutoCompleteInput";
 import Parse from "parse/react-native.js";
-
-
-import List from '../../components/List'
-import AutoCompleteInput from '../../components/AutoCompleteInput'
-import NotificationsModal from '../../components/Modals/NotificationsModal'
-
-import dataTeste from '../../dataTeste'
-
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 
 const initialState = {
@@ -25,8 +10,6 @@ const initialState = {
     arrStockItems : [],
     refresh: false
 }
-
-let showNotificationModal = false;
 
 export default class Stock extends Component {
     state = {
@@ -163,17 +146,8 @@ export default class Stock extends Component {
         }
    }
 
-   showModal = () => {
-    this.setState({isShowingNotificationModal: true})
-   }
-
-   closeModal() {
-    this.setState({isShowingNotificationModal: false})
-   }
-
     render() {
       return (
-
         <Container>
           <HeaderContainer>
             <AutoCompleteInput

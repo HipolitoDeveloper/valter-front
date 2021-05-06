@@ -42,7 +42,7 @@
     </li>
     <!-- <li><a href="#usage">Usabilidade</a></li> -->
     <li><a href="#telas">Telas</a></li>
-    <li><a href="#atualizações-futuras">Futuras atualizações</a></li> 
+    <li><a href="#atualizações-futuras">Atualizações Fturuas</a></li> 
     <li><a href="#contatos">Contatos</a></li>   
   </ol>
 </details>

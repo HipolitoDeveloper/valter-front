@@ -1,57 +1,76 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback } from "react";
 import { FlatList, RefreshControl } from "react-native";
 
-import {ListContainer, List} from './style'
-import ListContent from '../ListContent'
+import { ListContainer, Items } from "./style";
+import { ListContent } from "../ListContent";
+import PropTypes from "prop-types";
 
 
-export default props => {
-  const [isRefreshing, setIsRefreshing] = useState(false);
+export const List = ({
+                       refreshItemList,
+                       listStyle,
+                       arrItems,
+                       updateQuantity,
+                       updatePortionType,
+                       onDelete,
+                       insertUserItem,
+                     }) => {
 
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
-  }
+  };
 
   const refreshList = React.useCallback(() => {
     setIsRefreshing(true);
     wait(2000).then(() => {
       setIsRefreshing(false);
-      props.refreshItemList();
-    } );
+      refreshItemList();
+    });
   }, []);
 
-    return (
-        <ListContainer style={props.listStyle}
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-        >
-            <List>
-            {/* {this.state.list.map((item, index) => {
-                return (<ListContent key={index} {...item} list={item} setQuantityValue={this.setQuantityValue} />)
-            })} */}
-                <FlatList
-                  refreshControl={
-                    <RefreshControl
-                      tintColor="transparent"
-                      colors={['transparent']}
-                      style={{backgroundColor: 'transparent'}}
-                      refreshing={isRefreshing}
-                      onRefresh={refreshList}
+  return (
+    <ListContainer style={listStyle}>
+      <Items>
+        <FlatList
+          data={arrItems}
+          keyExtractor={i => `${i.id}`}
+          renderItem={({ item }) =>
+            <ListContent {...item} arrCategory={item}
+                         updateQuantity={updateQuantity}
+                         updatePortionType={updatePortionType}
+                         onDelete={onDelete}
+                         insertUserItem={insertUserItem}
+            />}
+          refreshControl={
+            <RefreshControl
+              tintColor="transparent"
+              colors={["transparent"]}
+              style={{ backgroundColor: "transparent" }}
+              refreshing={isRefreshing}
+              onRefresh={refreshList}/>}
+        />
+      </Items>
+    </ListContainer>
 
-                    />
-                  }
-                  data={props.arrItems}
-                  keyExtractor={i => `${i.id}`}
-                  renderItem={({item}) =>
-                  <ListContent {...item} arrCategory={item}
-                    updateQuantity={props.updateQuantity}
-                    updatePortionType={props.updatePortionType}
-                    onDelete={props.onDelete}
-                    insertUserItem={props.insertUserItem}
-                />} />
+  );
+};
 
-            </List>
-        </ListContainer>
+ListContent.propTypes = {
+  refreshItemList: PropTypes.func,
+  listStyle: PropTypes.object,
+  arrItems: PropTypes.object,
+  updateQuantity: PropTypes.func,
+  updatePortionType: PropTypes.func,
+  onDelete: PropTypes.func,
+  insertUserItem: PropTypes.func,
+};
 
-    )
-}
+ListContent.defaultProps = {
+  insertUserItem: () => {},
+  arrCategory: [],
+  onDelete: () => {},
+  updatePortionType: () => {},
+};
 

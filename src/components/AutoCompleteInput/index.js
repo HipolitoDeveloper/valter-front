@@ -8,11 +8,13 @@ import {
 
 } from './style'
 
-import OptionListModal from '../Modals/OptionListModal'
+import {OptionListModal} from '../Modals/OptionListModal'
+
+import PropTypes from "prop-types";
 
 
 
-export default props => {
+export const AutoCompleteInput = ({refreshItemList, isToStock, isToRecipe, addItem }) => {
 
     //Variáveis da lógica de add Item
     const[strSearchedItem, setSearchedItem] = useState('');
@@ -33,34 +35,34 @@ export default props => {
 
 
     function addChosenItem(objItem, objItemInformation) {
-        props.addItem(objItem, objItemInformation);
+        addItem(objItem, objItemInformation);
         setSearchedItem('')
     }
 
     function closeModal() {
         setShowingModal(false);
-        props.refreshItemList();
+        refreshItemList();
     }
 
     return(
 
         <Container>
             <OptionListModal
-            isToStock={props.isToStock}
-            isToRecipe={props.isToRecipe}
+            isToStock={isToStock}
+            isToRecipe={isToRecipe}
             isShowingModal={isShowingModal}
             strSearchedItem={strSearchedItem}
             onCloseModal = {closeModal}
             addChosenItem={addChosenItem}
-            setSearchedItem={setSearchedItem}
+            updateSearchedItem={setSearchedItem}
            />
 
-                <InputContainer style={props.isToStock? {borderBottomColor:'#FFF'}: {borderBottomColor:'#4ABFBF'}}>
+                <InputContainer style={isToStock? {borderBottomColor:'#FFF'}: {borderBottomColor:'#4ABFBF'}}>
                     <InputContent >
                         <InputAutoComplete
-                                style={props.isToStock? {color: '#FFF'}:{color: '#4ABFBF'}}
+                                style={isToStock? {color: '#FFF'}:{color: '#4ABFBF'}}
                                 placeholder="O que você vai comprar hoje?"
-                                placeholderTextColor={props.isToStock? '#FFF':'#4ABFBF'}
+                                placeholderTextColor={isToStock? '#FFF':'#4ABFBF'}
                                 value={strSearchedItem}
                                 onChangeText={(text) => setSearchedItem(text)}
                                 onEndEditing={() => openModal()}
@@ -70,7 +72,19 @@ export default props => {
 
                 </InputContainer>
         </Container>
-
-
     )
 }
+
+AutoCompleteInput.propTypes = {
+    refreshItemList: PropTypes.func,
+    isToStock: PropTypes.bool,
+    isToRecipe: PropTypes.bool,
+    addItem: PropTypes.func,
+};
+
+AutoCompleteInput.defaultProps = {
+    refreshItemList: () => {},
+    isToStock: false,
+    isToRecipe: false,
+    addItem: () => {}
+};

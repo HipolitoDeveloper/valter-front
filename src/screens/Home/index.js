@@ -9,8 +9,8 @@ import {
   Header,
   HeaderTitle,  } from "./style";
 
-import  List  from "../../components/List";
-import AutoCompleteInput from "../../components/AutoCompleteInput";
+import  {List}  from "../../components/List";
+import {AutoCompleteInput} from "../../components/AutoCompleteInput";
 
 const initialState = {
   arrShopList: [],

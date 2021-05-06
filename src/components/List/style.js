@@ -2,7 +2,7 @@ import styled from 'styled-components/native'
 
 
 
-export const List = styled.View`   
+export const Items = styled.View`   
     width: 100%;    
     flex-direction: column;
     justify-content: center;   
