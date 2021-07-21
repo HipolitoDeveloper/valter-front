@@ -1,5 +1,5 @@
 module.exports = {
-  applicationId: 'myAppId',
+  applicationId: 'geladeira',
   javascriptKey: 'javascriptKeY',
-  serverURL: 'http://192.168.15.12:1337/parse',
+  serverURL: 'http://192.168.15.24:1337/parse',
 };

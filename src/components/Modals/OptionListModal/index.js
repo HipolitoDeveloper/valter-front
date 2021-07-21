@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 
 import {
   CloseIcon,
@@ -35,39 +35,41 @@ import Parse from 'parse/react-native.js';
 
 import arrPickerData from '../../../common/picker/portionData';
 import PropTypes from 'prop-types';
-import {ListContent} from '../../ListContent';
+import {ListContent} from '../../ShopList/ListContent';
+import {convertToObj} from '../../../contexts/ShopList/ShopListReducer';
+import {ShopListContext} from '../../../contexts/ShopList/ShopListContext';
 
 export const OptionListModal = ({
   strSearchedItem,
-  updateSearchedItem,
-  isToStock,
-  addChosenItem,
-  onCloseModal,
+  handleSearchedItem,
+  handleModal,
   isShowingModal,
+  isFromStock,
 }) => {
+  const {insertShoplistItem} = useContext(ShopListContext);
+
   //Variáveis da lógica de add Item
   const [strSearch, setSearch] = useState('');
   const [arrChosenItems, setChosenItems] = useState([]);
-  const [objChosenItem, setObjChosenItem] = useState([]);
 
   //Lista principais
   const [arrItemsFiltered, setItemsFiltered] = useState([]); //Lista de Visualização
   const [arrItemList, setItemList] = useState([]); //Array de Itens
   // const[itens, setItens] = useState([]);
-
-  async function onOpenModal() {
+  const onOpenModal = async () => {
     setSearch(strSearchedItem);
-    await loadItems();
-  }
+    await getItems();
+  };
 
-  async function loadItems() {
+  const getItems = () => {
     try {
       const Item = Parse.Object.extend('itens');
       const queryItem = new Parse.Query(Item);
       queryItem.include(['marca_id.nome']);
 
-      queryItem.find().then((arrItems) => {
-        loadItemList(strSearchedItem, arrItems);
+      queryItem.find().then((parseObject) => {
+        const arrItems = convertToObj(parseObject);
+        buildItemList(strSearchedItem, arrItems);
         setItemList(arrItems);
       });
     } catch (error) {
@@ -77,107 +79,60 @@ export const OptionListModal = ({
         )}`,
       );
     }
-  }
-
-  function updateList(arrItemsFiltered) {
-    const arrItemListFiltered = arrItemsFiltered.filter(
-      (item) => item.get('descricao') !== '',
-    );
-    setItemsFiltered(arrItemListFiltered);
-  }
-
-  function loadItemList(strSearch, arrItems) {
+  };
+  const buildItemList = (strSearch, arrItems) => {
     if (strSearch) {
       const regex = new RegExp(`${strSearch.trim()}`, 'i');
       let arrItemsFiltered = [];
       if (!arrItems) {
         arrItemsFiltered = arrItemList.filter(
-          (i) => i.get('descricao').search(regex) >= 0,
+          (i) => i.descricao.search(regex) >= 0,
         );
       } else {
         arrItemsFiltered = arrItems.filter(
-          (i) => i.get('descricao').search(regex) >= 0,
+          (i) => i.descricao.search(regex) >= 0,
         );
       }
 
       arrItemsFiltered.forEach((item) => {
-        item.set('isChose', false);
-        item.set('portionType', 'unidade');
+        item.isChose = false;
+        item.tipo_porcao = 'unidade';
       });
 
       setItemsFiltered(arrItemsFiltered);
       setSearch(strSearch);
-      updateSearchedItem(strSearch);
+      handleSearchedItem(strSearch);
     } else {
       setItemsFiltered([]);
-      updateSearchedItem(strSearchedItem);
+      handleSearchedItem(strSearchedItem);
     }
-  }
+  };
 
-  async function updateItemQuantity(objItem) {
-    let objItemVerifier = [];
-    if (isToStock) {
-      const UserItem = Parse.Object.extend('itens_usuarios');
-      const queryItemUser = new Parse.Query(UserItem);
-      queryItemUser.equalTo('item_id', objItem);
-      objItemVerifier = await queryItemUser.find();
-    } else {
-      const itemList = Parse.Object.extend('listas_compras_itens');
-      const queryItemList = new Parse.Query(itemList);
-      queryItemList.equalTo('item_id', objItem);
-      objItemVerifier = await queryItemList.find();
-    }
-
-    // if(objItemVerifier.length === 0) {
-    arrItemsFiltered.forEach((item) => {
-      if (item.id === objItem.id) {
-        if (objItem.get('quantity') == 0) {
-          item.set('isChose', false);
-        } else {
-          item.set('isChose', true);
-        }
+  const handleItem = (handledItem, inputName, value) => {
+    const newArrItemsFiltered = arrItemsFiltered.map((item) => {
+      if (item.objectId === handledItem.objectId) {
+        item.isChose = !(value === '0' || value === '');
+        item = {
+          ...item,
+          [inputName]: value,
+        };
       }
+      return item;
     });
 
-    updateList(arrItemsFiltered);
-    // } else {
-    //     Alert.alert(
-    //         "Atenção",
-    //         "Item já existente na lista de compras, gostaria de excluir?",
-    //         [
-    //             {
-    //                 text: "Não",
-    //             },
-    //             {
-    //                 text: "Sim",
-    //                 onPress: () => deleteItem(objItem)
-    //             }
-    //         ]
-    //     );
-    // }
-  }
+    setItemsFiltered(newArrItemsFiltered);
+  };
 
-  function changePortionType(objItem, strPortionType) {
-    arrItemsFiltered.map((item) => {
-      if (item.id == objItem.id) {
-        item.set('portionType', strPortionType);
-      }
-    });
-    updateList(arrItemsFiltered);
-  }
+  const chooseInsertMethod = () => {
+    return isFromStock ? null : insertShoplistItem;
+  };
 
-  async function createChosenItemsList(objItem) {
-    const objItemInformation = {
-      quantity: parseInt(objItem.get('quantity')),
-      portionType: objItem.get('portionType'),
-    };
-    objItem.revert();
-
+  const insertItem = (objItem) => {
     arrChosenItems.push(objItem);
     setChosenItems(arrChosenItems);
-    addChosenItem(objItem, objItemInformation);
-    loadItemList('', null);
-  }
+    chooseInsertMethod(objItem, objItemInformation);
+    buildItemList('', null);
+  };
 
   async function deleteItem(objItem) {
     if (isToStock) {
@@ -207,25 +162,26 @@ export const OptionListModal = ({
     updateList(arrItemsFiltered);
   }
 
-  const getOptionText = (objItem) => {
-    if (objItem.get('isChose')) {
+  const getOptionText = (handledItem) => {
+    // if (objItem.isChose) {
+    if (handledItem.isChose) {
       return (
         <OptionText>
           <TouchableTitle
             onPress={() => {
-              createChosenItemsList(objItem);
+              insertItem(handledItem);
             }}>
-            <Title>{objItem.get('descricao')}</Title>
+            <Title>{handledItem.descricao}</Title>
           </TouchableTitle>
-          <Description>{objItem.get('marca_id')?.get('nome')}</Description>
+          <Description>{handledItem.marca_id?.nome}</Description>
         </OptionText>
       );
     } else {
       return (
         <OptionText>
-          <Title>{objItem.get('descricao')}</Title>
+          <Title>{handledItem.descricao}</Title>
 
-          <Description>{objItem.get('marca_id')?.get('nome')}</Description>
+          <Description>{handledItem.marca_id?.nome}</Description>
         </OptionText>
       );
     }
@@ -239,14 +195,14 @@ export const OptionListModal = ({
           onOpenModal();
         }}
         onRequestClose={() => {
-          onCloseModal();
+          handleModal();
           setChosenItems([]);
           setItemsFiltered([]);
         }}>
         <Container>
           <CloseIcon
             onPress={() => {
-              onCloseModal();
+              handleModal();
               setChosenItems([]);
               setItemsFiltered([]);
             }}>
@@ -260,7 +216,7 @@ export const OptionListModal = ({
                 placeholder="Procure o item desejado abaixo..."
                 placeholderTextColor="#FFF"
                 value={strSearch}
-                onChangeText={(text) => loadItemList(text, null)}
+                onChangeText={(text) => buildItemList(text, null)}
                 autoFocus={true}
               />
             </InputContent>
@@ -268,7 +224,7 @@ export const OptionListModal = ({
           <OptionContainer>
             <FlatList
               data={arrItemsFiltered}
-              keyExtractor={(i) => `${i.id}`}
+              keyExtractor={(i) => `${i.objectId}`}
               renderItem={({item}) => (
                 <OptionContent>
                   {getOptionText(item)}
@@ -276,16 +232,19 @@ export const OptionListModal = ({
                   <OptionInput>
                     <InputPortion
                       keyboardType={'numeric'}
-                      onChangeText={(text) => item.set('quantity', text)}
-                      onEndEditing={() => updateItemQuantity(item)}
+                      name={'quantidade'}
+                      value={item.quantidade}
+                      onChangeText={(text) =>
+                        handleItem(item, 'quantidade', text)
+                      }
                     />
                     <Picker
                       mode={'dropdown'}
                       dropdownIconColor="#68CACA"
                       style={styles.picker}
-                      selectedValue={item.get('portionType')}
+                      selectedValue={item.tipo_porcao}
                       onValueChange={(itemValue, itemIndex) =>
-                        changePortionType(item, itemValue)
+                        handleItem(item, 'tipo_porcao', itemValue)
                       }>
                       {arrPickerData.map((picker, index) => {
                         return (
@@ -322,20 +281,20 @@ export const OptionListModal = ({
 
 OptionListModal.propTypes = {
   strSearchedItem: PropTypes.string,
-  updateSearchedItem: PropTypes.func,
+  handleSearchedItem: PropTypes.func,
   isToStock: PropTypes.bool,
   isShowingModal: PropTypes.bool,
-  addChosenItem: PropTypes.func,
-  onCloseModal: PropTypes.func,
+  insertNewItem: PropTypes.func,
+  handleModal: PropTypes.func,
 };
 
 OptionListModal.defaultProps = {
   strSearchedItem: '',
-  updateSearchedItem: () => {},
+  handleSearchedItem: () => {},
   isToStock: false,
   isShowingModal: false,
-  addChosenItem: () => {},
-  onCloseModal: () => {},
+  insertNewItem: () => {},
+  handleModal: () => {},
 };
 
 const styles = StyleSheet.create({

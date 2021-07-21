@@ -1,6 +1,5 @@
-import styled from 'styled-components/native'
-import {StyleSheet} from 'react-native'
-
+import styled from 'styled-components/native';
+import {StyleSheet} from 'react-native';
 
 // export const Container = styled.ScrollView.attrs({
 //     contentContainerStyle: props => {
@@ -12,28 +11,34 @@ import {StyleSheet} from 'react-native'
 // ` `
 
 export const Container = styled.SafeAreaView`
-    flex: 1;   
-    
-`
+  flex: 1;
+`;
 
 export const Header = styled.View`
-    height: 17%;
-    width: 100%;
-    background-color: #FFF;    
-`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 10%;
+  width: 100%;
+  background-color: #fff;
+`;
 
-export const HeaderTitle = styled.Text` 
-    font-style: italic;
-    font-weight: bold;
-    font-size: 25px;     
-    width: 100%;
-    color: #68CACA; 
-    padding-left: 15px; 
-    margin-top: 15px;
-    /* padding-bottom: 15px;
-    padding-top: 15px; */
-    /* background-image: linear-gradient(to right, red , yellow); */
-   
-    /* font-family: Arial */
+export const HeaderTitle = styled.Text`
+  font-style: italic;
+  font-weight: bold;
+  font-size: 25px;
+  width: 100%;
+  color: #68caca;
+  padding-left: 15px;
+  margin-top: 15px;
+  /* padding-bottom: 15px;
+  padding-top: 15px; */
+  /* background-image: linear-gradient(to right, red , yellow); */
 
-`
+  /* font-family: Arial */
+`;
+
+export const LogoutButton = styled.TouchableOpacity`
+  margin-right: 20px;
+  margin-top: 20px;
+`;

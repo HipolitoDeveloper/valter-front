@@ -1,90 +1,72 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState} from 'react';
 
 import {
-    Container,
-    InputAutoComplete,
-    InputContainer,
-    InputContent,
+  Container,
+  InputAutoComplete,
+  InputContainer,
+  InputContent,
+} from './style';
 
-} from './style'
+import {OptionListModal} from '../Modals/OptionListModal';
 
-import {OptionListModal} from '../Modals/OptionListModal'
+import PropTypes from 'prop-types';
 
-import PropTypes from "prop-types";
+export const AutoCompleteInput = ({refreshItemList, isFromStock}) => {
+  const [strSearchedItem, setSearchedItem] = useState('');
 
+  const [isShowingModal, setShowingModal] = useState(false);
 
-
-export const AutoCompleteInput = ({refreshItemList, isToStock, isToRecipe, addItem }) => {
-
-    //Variáveis da lógica de add Item
-    const[strSearchedItem, setSearchedItem] = useState('');
-
-
-    //Variáveis Boolean's
-    const [isShowingModal, setShowingModal] = useState(false)
-
-
-
-    function openModal() {
-        if(strSearchedItem) {
-            setShowingModal(true)
-        } else {
-            setShowingModal(false)
-        }
+  const openModal = () => {
+    if (strSearchedItem) {
+      setShowingModal(true);
+    } else {
+      setShowingModal(false);
     }
+  };
 
+  function handleModal() {
+    setShowingModal(!isShowingModal);
+    setSearchedItem('');
+    refreshItemList();
+  }
 
-    function addChosenItem(objItem, objItemInformation) {
-        addItem(objItem, objItemInformation);
-        setSearchedItem('')
-    }
+  return (
+    <Container>
+      <OptionListModal
+        isFromStock={isFromStock}
+        isShowingModal={isShowingModal}
+        strSearchedItem={strSearchedItem}
+        handleModal={handleModal}
+        handleSearchedItem={setSearchedItem}
+      />
 
-    function closeModal() {
-        setShowingModal(false);
-        refreshItemList();
-    }
-
-    return(
-
-        <Container>
-            <OptionListModal
-            isToStock={isToStock}
-            isToRecipe={isToRecipe}
-            isShowingModal={isShowingModal}
-            strSearchedItem={strSearchedItem}
-            onCloseModal = {closeModal}
-            addChosenItem={addChosenItem}
-            updateSearchedItem={setSearchedItem}
-           />
-
-                <InputContainer style={isToStock? {borderBottomColor:'#FFF'}: {borderBottomColor:'#4ABFBF'}}>
-                    <InputContent >
-                        <InputAutoComplete
-                                style={isToStock? {color: '#FFF'}:{color: '#4ABFBF'}}
-                                placeholder="O que você vai comprar hoje?"
-                                placeholderTextColor={isToStock? '#FFF':'#4ABFBF'}
-                                value={strSearchedItem}
-                                onChangeText={(text) => setSearchedItem(text)}
-                                onEndEditing={() => openModal()}
-                              >
-                            </InputAutoComplete>
-                    </InputContent>
-
-                </InputContainer>
-        </Container>
-    )
-}
+      <InputContainer
+        style={
+          isFromStock
+            ? {borderBottomColor: '#FFF'}
+            : {borderBottomColor: '#4ABFBF'}
+        }>
+        <InputContent>
+          <InputAutoComplete
+            style={isFromStock ? {color: '#FFF'} : {color: '#4ABFBF'}}
+            placeholder="O que você vai comprar hoje?"
+            placeholderTextColor={isFromStock ? '#FFF' : '#4ABFBF'}
+            value={strSearchedItem}
+            onChangeText={(text) => setSearchedItem(text)}
+            onEndEditing={() => openModal()}
+          />
+        </InputContent>
+      </InputContainer>
+    </Container>
+  );
+};
 
 AutoCompleteInput.propTypes = {
-    refreshItemList: PropTypes.func,
-    isToStock: PropTypes.bool,
-    isToRecipe: PropTypes.bool,
-    addItem: PropTypes.func,
+  refreshItemList: PropTypes.func,
+  isFromStock: PropTypes.bool,
 };
 
 AutoCompleteInput.defaultProps = {
-    refreshItemList: () => {},
-    isToStock: false,
-    isToRecipe: false,
-    addItem: () => {}
+  refreshItemList: () => {},
+  isFromStock: false,
 };

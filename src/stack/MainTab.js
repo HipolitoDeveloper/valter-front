@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import CustomTabBar from '../components/CustomTabBar';
 
@@ -11,10 +11,10 @@ import Notification from '../screens/Notification';
 const Tab = createBottomTabNavigator();
 
 export default () => (
-    <Tab.Navigator tabBar={props=><CustomTabBar {...props} />}>
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Stock" component={Stock} />
-        <Tab.Screen name="Recipes" component={Recipes} />
-        <Tab.Screen name="Notification" component={Notification} />
-    </Tab.Navigator>
+  <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
+    <Tab.Screen name="Home" component={Home} />
+    <Tab.Screen name="Stock" component={Stock} />
+    <Tab.Screen name="Recipes" component={Recipes} />
+    <Tab.Screen name="Notification" component={Notification} />
+  </Tab.Navigator>
 );
