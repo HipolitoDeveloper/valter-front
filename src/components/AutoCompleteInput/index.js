@@ -1,23 +1,20 @@
-import React, {useState} from 'react';
+import React, { useContext, useState } from "react";
 
-import {
-  Container,
-  InputAutoComplete,
-  InputContainer,
-  InputContent,
-} from './style';
+import { Container, InputAutoComplete, InputContainer, InputContent } from "./style";
 
-import {OptionListModal} from '../Modals/OptionListModal';
+import { OptionListModal } from "../Modals/OptionListModal";
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import { ShopListContext } from "../../contexts/ShopList/ShopListContext";
 
-export const AutoCompleteInput = ({refreshItemList, isFromStock}) => {
-  const [strSearchedItem, setSearchedItem] = useState('');
+export const AutoCompleteInput = ({ isFromStock }) => {
+  const { loadShopList } = useContext(ShopListContext);
 
+  const [search, setSearch] = useState("");
   const [isShowingModal, setShowingModal] = useState(false);
 
   const openModal = () => {
-    if (strSearchedItem) {
+    if (search) {
       setShowingModal(true);
     } else {
       setShowingModal(false);
@@ -26,33 +23,35 @@ export const AutoCompleteInput = ({refreshItemList, isFromStock}) => {
 
   function handleModal() {
     setShowingModal(!isShowingModal);
-    setSearchedItem('');
-    refreshItemList();
+    setSearch("");
+    loadShopList();
   }
 
   return (
     <Container>
       <OptionListModal
+        search={search}
+        setSearch={setSearch}
         isFromStock={isFromStock}
         isShowingModal={isShowingModal}
-        strSearchedItem={strSearchedItem}
         handleModal={handleModal}
-        handleSearchedItem={setSearchedItem}
       />
 
       <InputContainer
         style={
           isFromStock
-            ? {borderBottomColor: '#FFF'}
-            : {borderBottomColor: '#4ABFBF'}
+            ? { borderBottomColor: "#FFF" }
+            : { borderBottomColor: "#4ABFBF" }
         }>
         <InputContent>
           <InputAutoComplete
-            style={isFromStock ? {color: '#FFF'} : {color: '#4ABFBF'}}
+            style={isFromStock ? { color: "#FFF" } : { color: "#4ABFBF" }}
             placeholder="O que você vai comprar hoje?"
-            placeholderTextColor={isFromStock ? '#FFF' : '#4ABFBF'}
-            value={strSearchedItem}
-            onChangeText={(text) => setSearchedItem(text)}
+            placeholderTextColor={isFromStock ? "#FFF" : "#4ABFBF"}
+            value={search}
+            onChangeText={(text) =>
+              setSearch(text)
+            }
             onEndEditing={() => openModal()}
           />
         </InputContent>
@@ -67,6 +66,7 @@ AutoCompleteInput.propTypes = {
 };
 
 AutoCompleteInput.defaultProps = {
-  refreshItemList: () => {},
+  refreshItemList: () => {
+  },
   isFromStock: false,
 };

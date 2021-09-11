@@ -4,7 +4,7 @@ import * as S from './style';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
-import {UserContext} from '../../../../../../Salooni_Project/salooni_react/salooni/src/contexts/User/UserContext';
+import {UserContext} from '../../../contexts/User/UserContext';
 import {useNavigation} from '@react-navigation/native';
 
 export const SignIn = () => {

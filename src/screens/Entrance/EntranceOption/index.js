@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Parse from 'parse/react-native.js';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native';
-import {UserContext} from '../../../../../../Salooni_Project/salooni_react/salooni/src/contexts/User/UserContext';
+import {UserContext} from '../../../contexts/User/UserContext';
 
 export const EntranceOption = () => {
   const navigate = useNavigation();

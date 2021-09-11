@@ -1,7 +1,7 @@
 import React, {createContext, useEffect, useState} from 'react';
 import Parse from 'parse/react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import {convertToObj} from '../../../../../../Casa_Project/AppV03/src/services/conversor';
+import {convertToObj} from '../../factory/common';
 export const UserContext = createContext();
 
 const initialState = {

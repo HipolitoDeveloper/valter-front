@@ -10,10 +10,10 @@ import {ShopList} from '../../components/ShopList';
 import {AutoCompleteInput} from '../../components/AutoCompleteInput';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {ShopListContext} from '../../contexts/ShopList/ShopListContext';
-import {UserContext} from '../../../../../Salooni_Project/salooni_react/salooni/src/contexts/User/UserContext';
+import {UserContext} from '../../contexts/User/UserContext';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
-import {convertFromAsyncStorage} from '../../services/conversor';
+import {convertFromAsyncStorage} from '../../factory/common';
 
 const Home = () => {
   const {loadShopList} = useContext(ShopListContext);
@@ -186,7 +186,7 @@ const Home = () => {
           <Icon name={'sign-out-alt'} size={20} color={'#4ABFBF'} />
         </LogoutButton>
       </Header>
-      <AutoCompleteInput isFromStock={false} refreshItemList={loadShopList} />
+      <AutoCompleteInput isFromStock={false} />
       <ShopList
         listStyle={{flex: 5}}
         // insertUserItem={this.insertUserItem}

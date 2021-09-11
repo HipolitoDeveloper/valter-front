@@ -1,5 +1,5 @@
 import Parse from 'parse/react-native';
-import {convertToObj} from '../../services/conversor';
+import {convertToObj} from '../../factory/common';
 
 export const createShopListObj = async (shopListUserId) => {
   return new Promise(async (resolve) => {

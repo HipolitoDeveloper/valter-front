@@ -1,13 +1,5 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from 'react';
+import React, {createContext, useReducer} from 'react';
 import {createShopListObj, ShopListReducer} from './ShopListReducer';
-import AsyncStorage from '@react-native-community/async-storage';
-import {UserContext} from '../../../../../Salooni_Project/salooni_react/salooni/src/contexts/User/UserContext';
 
 export const ShopListContext = createContext();
 
